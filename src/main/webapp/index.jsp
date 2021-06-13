@@ -7,9 +7,10 @@
     <link href="jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="jquery/jquery-1.11.1-min.js"></script>
     <script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="jquery/layer/layer/layer.js"></script>
     <title>登录</title>
 </head>
-<body>
+<body onkeydown="keyLogin()">
 <div style="position: absolute; top: 0; left: 0; width: 60%;">
     <img src="image/IMG_7114.JPG" style="width: 100%; position: relative; top: 50px;">
 </div>
@@ -41,12 +42,21 @@
     </div>
 </div>
 <script>
+
+    function keyLogin() {
+        if (event.keyCode===13) {
+            $("button").click()
+        }
+        
+    }
     function login() {
         let loginForm = $("#loginForm").serialize();
         $.post("/crm/settings/user/login",loginForm,function (result) {
-            var x = result.message
-            console.log(result)
-            console.log(x)
+            if (!result.ok) {
+                layer.msg('不开心。。', {icon: 5});
+            } else {
+
+            }
         },"json");
     }
 </script>
