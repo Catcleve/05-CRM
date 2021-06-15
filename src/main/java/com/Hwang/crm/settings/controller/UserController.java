@@ -3,16 +3,19 @@ package com.Hwang.crm.settings.controller;
 
 import com.Hwang.crm.base.bean.ResultVo;
 import com.Hwang.crm.base.exception.UserException;
+import com.Hwang.crm.base.util.MD5Util;
+import com.Hwang.crm.base.util.UploadUtil;
 import com.Hwang.crm.settings.bean.User;
 import com.Hwang.crm.settings.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 
 @Controller
@@ -21,22 +24,64 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    //    登录方法
     @RequestMapping("/settings/user/login")
     @ResponseBody
-    public ResultVo login(User user , HttpServletRequest request , HttpServletResponse response){
+    public ResultVo login(User user, HttpServletRequest request) {
         ResultVo resultVo = new ResultVo();
 //        加入ip地址
         String remoteAddr = request.getRemoteAddr();
         user.setAllowIps(remoteAddr);
         try {
-            userService.login(user);
+            user = userService.login(user);
 
         } catch (UserException e) {
             resultVo.setMessage(e.getMessage());
             return resultVo;
         }
         resultVo.setOk(true);
-        request.getSession().setAttribute("user",user);
+        request.getSession().setAttribute("user", user);
         return resultVo;
+    }
+
+    //    登出方法
+    @RequestMapping("settings/user/logout")
+    public String logout(HttpSession session) {
+        session.removeAttribute("user");
+        return "redirect:/index.jsp";
+    }
+
+    //    异步验证原密码
+    @RequestMapping("/settings/user/verifyOldPwd")
+    @ResponseBody
+    public ResultVo verifyOldPwd(String loginPwd, HttpSession session) {
+        ResultVo resultVo = new ResultVo();
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+//            登录页面停留时间过长，session失效
+            System.out.println("user = " + user);
+        } else {
+            User uuser = new User();
+            uuser.setLoginAct(user.getLoginAct());
+            uuser.setLoginPwd(MD5Util.getMD5(loginPwd));
+            try {
+                userService.verifyOldPwd(uuser);
+
+            } catch (UserException e) {
+                resultVo.setMessage(e.getMessage());
+                resultVo.setOk(false);
+                return resultVo;
+            }
+        }
+        resultVo.setOk(true);
+        return resultVo;
+    }
+
+    //    文件上传
+    @RequestMapping("/settings/user/upload")
+    @ResponseBody
+    public ResultVo upload(MultipartFile[] img, HttpSession session) {
+
+        return UploadUtil.fileUpload(img, session);
     }
 }

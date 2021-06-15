@@ -5,7 +5,10 @@ public enum UserEnum {
     LOGIN_ACCOUNT("001-01","账号或密码错误！"),
     LOGIN_EXPIRE_TIME("001-02","账号已失效！"),
     LOGIN_LOCKED("001-03","账号已被锁定"),
-    LOGIN_IPS("001-04", "IP不允许");
+    LOGIN_IPS("001-04", "IP不允许"),
+    LOGIN_verifyOldPwd("001-05", "原密码错误"),
+    UPLOAD_SUFFIX("001-006","文件类型错误"),
+    UPLOAD_SIZE("001-007","图片过大！");
 
     private String typeCode;
     private String message;

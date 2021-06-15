@@ -19,7 +19,7 @@ public class UserServicesImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public void login(User user) {
+    public User login(User user) {
 
 //        加密密码
         String loginPwd = user.getLoginPwd();
@@ -48,6 +48,15 @@ public class UserServicesImpl implements UserService {
             if (!user1.getAllowIps().contains(user.getAllowIps())) {
                 throw new UserException(UserEnum.LOGIN_IPS);
             }
+        }
+        return users.get(0);
+    }
+
+    @Override
+    public void verifyOldPwd(User user) {
+        List<User> users = userMapper.select(user);
+        if (users.size() == 0) {
+            throw new UserException(UserEnum.LOGIN_verifyOldPwd);
         }
     }
 }

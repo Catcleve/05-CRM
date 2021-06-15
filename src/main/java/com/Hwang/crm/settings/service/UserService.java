@@ -4,5 +4,7 @@ import com.Hwang.crm.settings.bean.User;
 
 public interface UserService {
 
-    public void login(User user);
+    public User login(User user);
+
+    void verifyOldPwd(User user);
 }
