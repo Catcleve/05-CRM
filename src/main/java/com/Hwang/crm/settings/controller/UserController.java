@@ -15,8 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
 
 @Controller
 public class UserController {
@@ -34,13 +32,13 @@ public class UserController {
         user.setAllowIps(remoteAddr);
         try {
             user = userService.login(user);
+            request.getSession().setAttribute("user", user);
 
         } catch (UserException e) {
             resultVo.setMessage(e.getMessage());
             return resultVo;
         }
         resultVo.setOk(true);
-        request.getSession().setAttribute("user", user);
         return resultVo;
     }
 
@@ -83,5 +81,20 @@ public class UserController {
     public ResultVo upload(MultipartFile[] img, HttpSession session) {
 
         return UploadUtil.fileUpload(img, session);
+    }
+
+    //    修改密码
+    @RequestMapping("/settings/user/changePwd")
+    @ResponseBody
+    public ResultVo upload(String newPwd, HttpSession session) {
+        ResultVo resultVo = new ResultVo();
+        User user = (User) session.getAttribute("user");
+        user.setLoginPwd(newPwd);
+        try {
+            userService.updatePwd(user);
+            resultVo.setOk(true);
+        } catch (UserException e) {
+        }
+        return resultVo;
     }
 }

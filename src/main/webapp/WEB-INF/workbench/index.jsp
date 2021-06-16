@@ -40,6 +40,13 @@
 
         </script>
 
+    <style>
+        #systemSet {
+            left: -89px;
+            min-width: 128px;
+        }
+    </style>
+
 </head>
 <body>
 
@@ -82,18 +89,18 @@
                 <h4 class="modal-title">修改密码</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" role="form">
+                <form class="form-horizontal" role="form" id="">
                     <div class="form-group">
                         <label for="oldPwd" class="col-sm-2 control-label">原密码</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="oldPwd">
+                            <input type="text" class="form-control" id="oldPwd" >
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="newPwd" class="col-sm-2 control-label">新密码</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="newPwd">
+                            <input type="text" class="form-control" id="newPwd" name="newPwd">
                         </div>
                     </div>
 
@@ -114,7 +121,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal"
-                        onclick="window.location.href='../login.html';">更新
+                        onclick="changePwd()">更新
                 </button>
             </div>
         </div>
@@ -153,7 +160,7 @@
                    data-toggle="dropdown">
                     <span class="glyphicon glyphicon-user"></span> ${user.name} <span class="caret"></span>
                 </a>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu" id="systemSet">
                     <li><a href="../settings/index.html"><span class="glyphicon glyphicon-wrench"></span> 系统设置</a></li>
                     <li><a href="javascript:void(0)" data-toggle="modal" data-target="#myInformation"><span
                             class="glyphicon glyphicon-file"></span> 我的资料</a></li>
@@ -184,15 +191,15 @@
                     class="glyphicon glyphicon-user"></span> 客户公海</a></li>
             <li class="liClass"><a href="/crm/toView/workbench/activity/index" target="workareaFrame"><span
                     class="glyphicon glyphicon-play-circle"></span> 市场活动</a></li>
-            <li class="liClass"><a href="clue/index.html" target="workareaFrame"><span
+            <li class="liClass"><a href="/crm/toView/workbench/clue/index" target="workareaFrame"><span
                     class="glyphicon glyphicon-search"></span> 线索（潜在客户）</a></li>
-            <li class="liClass"><a href="customer/index.html" target="workareaFrame"><span
+            <li class="liClass"><a href="/crm/toView/workbench/customer/index" target="workareaFrame"><span
                     class="glyphicon glyphicon-user"></span> 客户</a></li>
-            <li class="liClass"><a href="contacts/index.html" target="workareaFrame"><span
+            <li class="liClass"><a href="/crm/toView/workbench/contacts/index" target="workareaFrame"><span
                     class="glyphicon glyphicon-earphone"></span> 联系人</a></li>
-            <li class="liClass"><a href="transaction/index.html" target="workareaFrame"><span
+            <li class="liClass"><a href="/crm/toView/workbench/transaction/chart/index" target="workareaFrame"><span
                     class="glyphicon glyphicon-usd"></span> 交易（商机）</a></li>
-            <li class="liClass"><a href="visit/index.html" target="workareaFrame"><span
+            <li class="liClass"><a href="/crm/toView/workbench/visit/index" target="workareaFrame"><span
                     class="glyphicon glyphicon-phone-alt"></span> 售后回访</a></li>
             <li class="liClass">
                 <a href="#no2" class="collapsed" data-toggle="collapse"><span class="glyphicon glyphicon-stats"></span>
@@ -264,8 +271,22 @@
         }
     });
 
+    //当再次输入密码窗口失去焦点时，使用异步判断是否两次输入密码一致
+    $("#confirmPwd").blur(function () {
+        var $_confirmPwd = $(this)
+        var newPwd = $("#newPwd").val();
+        var confirmPwd = $_confirmPwd.val()
+
+        if (confirmPwd !== newPwd) {
+            layer.msg("两次输入密码不一致", {icon: 5});
+        } else if (newPwd === ""||newPwd==null) {
+            layer.msg("密码不能为空", {icon: 5})
+        }
+
+
+    });
+
     $("#img").change(function () {
-        alert(1111111)
         $.ajaxFileUpload({
             url:"/crm/settings/user/upload",
             fileElementId: "img",
@@ -275,6 +296,30 @@
             }
         })
     });
+
+    //修改密码
+    function changePwd() {
+        $.post("/crm/settings/user/changePwd",
+            {newPwd:$("#newPwd").val()},
+            function (result) {
+                if (!result.ok) {
+                    layer.msg("修改失败，请重试", {icon: 5});
+                } else {
+                    layer.msg("修改成功，即将跳往登录页面", {icon: 1})
+
+                    setTimeout(function () {
+                        layer.msg('3');
+                    },1000)
+                    setTimeout(function () {
+                        layer.msg('2');
+                    },2000)
+                    setTimeout(function () {
+                        layer.msg('1');
+                        logOut()
+                    },3000)
+                }
+        },"json");
+    }
 
 </script>
 </body>

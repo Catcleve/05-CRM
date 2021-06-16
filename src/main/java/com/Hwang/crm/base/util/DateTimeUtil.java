@@ -10,9 +10,8 @@ public class DateTimeUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
 		Date date = new Date();
-		String dateStr = sdf.format(date);
-		
-		return dateStr;
+
+		return sdf.format(date);
 		
 	}
 	

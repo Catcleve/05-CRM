@@ -1,15 +1,16 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 
-<link href="../../../jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
-<link href="../../../jquery/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" />
+<link href="/crm/jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+<link href="/crm/jquery/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" />
 
-<script type="text/javascript" src="../../../jquery/jquery-1.11.1-min.js"></script>
-<script type="text/javascript" src="../../../jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../../jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.min.js"></script>
-<script type="text/javascript" src="../../../jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
+<script type="text/javascript" src="/crm/jquery/jquery-1.11.1-min.js"></script>
+<script type="text/javascript" src="/crm/jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/crm/jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="/crm/jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
 
 <script type="text/javascript">
 
@@ -25,7 +26,7 @@
 	        todayBtn: true,
 	        pickerPosition: "bottom-left"
 		});
-		
+
 		$("#endTime").datetimepicker({
 			minView: "month",
 			language:  'zh-CN',
@@ -157,7 +158,7 @@
 					<tbody>
 						<tr>
 							<td><input type="checkbox" /></td>
-							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.html';">拜访客户</a></td>
+							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.jsp';">拜访客户</a></td>
 							<td>2017-07-09</td>
 							<td>李四先生</td>
 							<td>未启动</td>
@@ -166,7 +167,7 @@
 						</tr>
 						<tr>
 							<td><input type="checkbox" /></td>
-							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.html';">拜访客户</a></td>
+							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.jsp';">拜访客户</a></td>
 							<td>2017-07-09</td>
 							<td>李四先生</td>
 							<td>未启动</td>

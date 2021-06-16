@@ -19,11 +19,12 @@ public class UserServicesImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
+
+//    登录
     public User login(User user) {
 
 //        加密密码
         String loginPwd = user.getLoginPwd();
-        System.out.println("loginPwd = " + loginPwd);
         String md5 = MD5Util.getMD5(loginPwd);
         user.setLoginPwd(md5);
         Example example = new Example(User.class);
@@ -52,11 +53,24 @@ public class UserServicesImpl implements UserService {
         return users.get(0);
     }
 
+
+//    验证旧密码
     @Override
     public void verifyOldPwd(User user) {
         List<User> users = userMapper.select(user);
         if (users.size() == 0) {
             throw new UserException(UserEnum.LOGIN_verifyOldPwd);
         }
+    }
+
+
+//    修改密码
+    @Override
+    public void updatePwd(User user) {
+        user.setLoginPwd(MD5Util.getMD5(user.getLoginPwd()));
+
+        int i = userMapper.updateByPrimaryKeySelective(user);
+
+
     }
 }
