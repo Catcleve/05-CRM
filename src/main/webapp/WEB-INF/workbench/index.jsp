@@ -120,7 +120,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                <button type="button" class="btn btn-primary"  id="changePwd_btn"
                         onclick="changePwd()">更新
                 </button>
             </div>
@@ -164,7 +164,7 @@
                     <li><a href="../settings/index.html"><span class="glyphicon glyphicon-wrench"></span> 系统设置</a></li>
                     <li><a href="javascript:void(0)" data-toggle="modal" data-target="#myInformation"><span
                             class="glyphicon glyphicon-file"></span> 我的资料</a></li>
-                    <li><a href="javascript:void(0)" data-toggle="modal" data-target="#editPwdModal"><span
+                    <li><a href="javascript:void(0)" data-toggle="modal" data-target="#editPwdModal" id="changePwd"><span
                             class="glyphicon glyphicon-edit"></span> 修改密码</a></li>
                     <li><a href="javascript:void(0);" data-toggle="modal" data-target="#exitModal"><span
                             class="glyphicon glyphicon-off"></span> 退出</a></li>
@@ -272,20 +272,26 @@
     });
 
     //当再次输入密码窗口失去焦点时，使用异步判断是否两次输入密码一致
-    $("#confirmPwd").blur(function () {
-        var $_confirmPwd = $(this)
-        var newPwd = $("#newPwd").val();
-        var confirmPwd = $_confirmPwd.val()
+    function changePwd() {
+        var $_confirmPwd = $("#confirmPwd")
+            const newPwd = $("#newPwd").val();
+            const confirmPwd = $_confirmPwd.val();
+            if (confirmPwd !== newPwd) {
+                 layer.msg("两次输入密码不一致", {icon: 5});
+                 return false
+            } else if (newPwd === "" || newPwd == null) {
+                 layer.msg("密码不能为空", {icon: 5});
+                return false
+            } else if ($("#oldPwd").val() === "" || $("#oldPwd").val() == null) {
+                layer.msg("请输入原密码", {icon: 5});
+                return false
+            }
+            else {
+                changePwd1()
+            }
+    }
 
-        if (confirmPwd !== newPwd) {
-            layer.msg("两次输入密码不一致", {icon: 5});
-        } else if (newPwd === ""||newPwd==null) {
-            layer.msg("密码不能为空", {icon: 5})
-        }
-
-
-    });
-
+    //上传图片
     $("#img").change(function () {
         $.ajaxFileUpload({
             url:"/crm/settings/user/upload",
@@ -298,27 +304,28 @@
     });
 
     //修改密码
-    function changePwd() {
-        $.post("/crm/settings/user/changePwd",
-            {newPwd:$("#newPwd").val()},
-            function (result) {
-                if (!result.ok) {
-                    layer.msg("修改失败，请重试", {icon: 5});
-                } else {
-                    layer.msg("修改成功，即将跳往登录页面", {icon: 1})
+    function changePwd1() {
 
-                    setTimeout(function () {
-                        layer.msg('3');
-                    },1000)
-                    setTimeout(function () {
-                        layer.msg('2');
-                    },2000)
-                    setTimeout(function () {
-                        layer.msg('1');
-                        logOut()
-                    },3000)
-                }
-        },"json");
+            $.post("/crm/settings/user/changePwd",
+                {newPwd:$("#newPwd").val()},
+                function (result) {
+                    if (!result.ok) {
+                        layer.msg("修改失败，请重试", {icon: 5});
+                    } else {
+                        layer.msg("修改成功，即将跳往登录页面", {icon: 1})
+
+                        setTimeout(function () {
+                            layer.msg('3');
+                        },1000)
+                        setTimeout(function () {
+                            layer.msg('2');
+                        },2000)
+                        setTimeout(function () {
+                            layer.msg('1');
+                            logOut()
+                        },3000)
+                    }
+                },"json");
     }
 
 </script>

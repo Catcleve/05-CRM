@@ -69,7 +69,7 @@ public class UserServicesImpl implements UserService {
     public void updatePwd(User user) {
         user.setLoginPwd(MD5Util.getMD5(user.getLoginPwd()));
 
-        int i = userMapper.updateByPrimaryKeySelective(user);
+        userMapper.updateByPrimaryKeySelective(user);
 
 
     }
