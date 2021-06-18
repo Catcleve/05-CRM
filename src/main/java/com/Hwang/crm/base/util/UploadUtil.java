@@ -1,21 +1,21 @@
 package com.Hwang.crm.base.util;
 
 import com.Hwang.crm.base.bean.ResultVo;
-import com.Hwang.crm.base.exception.UserEnum;
-import com.Hwang.crm.base.exception.UserException;
+import com.Hwang.crm.base.exception.CrmEnum;
+import com.Hwang.crm.base.exception.CrmException;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
 public class UploadUtil {
 
-    public static ResultVo fileUpload(MultipartFile[] img, HttpSession session) {
+    public static ResultVo fileUpload(MultipartFile[] img, HttpServletRequest request) {
         ResultVo resultVo = new ResultVo();
         //        先搞个文件上传的位置
-        String path = session.getServletContext().getRealPath("/upload");
+        String path = request.getSession().getServletContext().getRealPath("/upload");
         //        创建文件夹对象
         File file = new File(path);
         //        创建文件夹
@@ -35,16 +35,19 @@ public class UploadUtil {
                 verifySuffix(name);
                 //       判断文件大小是否正确
                 verifyMaxSize(multipartFile);
+                //        给文件起名字，以免重复
+                name = System.currentTimeMillis() + name;
+                //        把文件放入硬盘
+                multipartFile.transferTo(new File(path + File.separator + name));
+//                获取文件的路径，返回给页面
+                path = request.getContextPath() + "/upload/" + name;
 
-            } catch (UserException e1) {
+                resultVo.setOk(true);
+                resultVo.setMessage("上传成功");
+                resultVo.setT(path);
+            } catch (CrmException e1) {
                 resultVo.setMessage(e1.getMessage());
                 return resultVo;
-            }
-            //        给文件起名字，以免重复
-            name = System.currentTimeMillis() + name;
-            //        把文件放入硬盘
-            try {
-                multipartFile.transferTo(new File(path + File.separator + name));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -53,8 +56,8 @@ public class UploadUtil {
     }
 
     private static void verifyMaxSize(MultipartFile multipartFile) {
-        if (multipartFile.getSize() > 4*1024*1024) {
-            throw new UserException(UserEnum.UPLOAD_SIZE);
+        if (multipartFile.getSize() > 4 * 1024 * 1024) {
+            throw new CrmException(CrmEnum.UPLOAD_SIZE);
         }
     }
 
@@ -62,7 +65,7 @@ public class UploadUtil {
         String[] imgs = {".jpg", ".png", ".jpeg", ".gif"};
         String substring = name.substring(name.lastIndexOf("."));
         if (!Arrays.asList(imgs).contains(substring)) {
-            throw new UserException(UserEnum.UPLOAD_SUFFIX);
+            throw new CrmException(CrmEnum.UPLOAD_SUFFIX);
         }
     }
 }

@@ -1,0 +1,9 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+
+<link href="/crm/jquery/layer/theme/default/layer.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="/crm/jquery/layer.js"></script>
+
+
+$.get("",{},function(data){},'json');
+$.post("",{},function(data){},'json');

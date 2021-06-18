@@ -2,7 +2,7 @@ package com.Hwang.crm.settings.controller;
 
 
 import com.Hwang.crm.base.bean.ResultVo;
-import com.Hwang.crm.base.exception.UserException;
+import com.Hwang.crm.base.exception.CrmException;
 import com.Hwang.crm.base.util.MD5Util;
 import com.Hwang.crm.base.util.UploadUtil;
 import com.Hwang.crm.settings.bean.User;
@@ -34,7 +34,7 @@ public class UserController {
             user = userService.login(user);
             request.getSession().setAttribute("user", user);
 
-        } catch (UserException e) {
+        } catch (CrmException e) {
             resultVo.setMessage(e.getMessage());
             return resultVo;
         }
@@ -65,7 +65,7 @@ public class UserController {
             try {
                 userService.verifyOldPwd(uuser);
 
-            } catch (UserException e) {
+            } catch (CrmException e) {
                 resultVo.setMessage(e.getMessage());
                 resultVo.setOk(false);
                 return resultVo;
@@ -78,9 +78,9 @@ public class UserController {
     //    文件上传
     @RequestMapping("/settings/user/upload")
     @ResponseBody
-    public ResultVo upload(MultipartFile[] img, HttpSession session) {
+    public ResultVo upload(MultipartFile[] img, HttpServletRequest request) {
 
-        return UploadUtil.fileUpload(img, session);
+        return UploadUtil.fileUpload(img, request);
     }
 
     //    修改密码
@@ -93,8 +93,27 @@ public class UserController {
         try {
             userService.updatePwd(user);
             resultVo.setOk(true);
-        } catch (UserException e) {
+        } catch (CrmException e) {
         }
         return resultVo;
     }
+
+
+//    修改头像
+    @RequestMapping("/settings/user/changePho")
+    @ResponseBody
+    public ResultVo<String> changePho(String img, HttpSession session) {
+        ResultVo<String> resultVo = new ResultVo<>();
+        User user = (User) session.getAttribute("user");
+        user.setImg(img);
+        try {
+            userService.updatePho(user);
+            resultVo.setOk(true);
+            resultVo.setMessage("头像修改成功");
+        } catch (CrmException e) {
+            resultVo.setMessage(e.getMessage());
+        }
+        return resultVo;
+    }
+
 }

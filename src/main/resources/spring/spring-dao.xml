@@ -31,7 +31,7 @@
                     <property name="properties">
                         <!--使用下面的方式配置参数，一行配置一个 -->
                         <value>
-                            params=value1
+                            helperDialect=mysql
                         </value>
                     </property>
                 </bean>
@@ -45,7 +45,8 @@
        tk.mybatis.spring.mapper.MapperScannerConfigurer:传统和通用mapper
    -->
     <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.Hwang.crm.settings.mapper"/>
+        <property name="basePackage" value="com.Hwang.crm.settings.mapper,
+                                        com.Hwang.crm.workbench.mapper"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 

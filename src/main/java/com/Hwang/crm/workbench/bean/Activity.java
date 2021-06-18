@@ -1,4 +1,4 @@
-package com.Hwang.crm.settings.bean;
+package com.Hwang.crm.workbench.bean;
 
 import lombok.Data;
 import tk.mybatis.mapper.annotation.NameStyle;
@@ -8,23 +8,32 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Data
-@Table(name = "tbl_user")
+@Table(name = "tbl_activity")
 @NameStyle(Style.normal)
-public class User {
+public class Activity {
+
     @Id
     private String id;
-    private String loginAct;
+
+    private String owner;
+
     private String name;
-    private String loginPwd;
-    private String email;
-    private String expireTime;
-    private String lockState;
-    private String deptno;
-    private String allowIps;
+
+    private String startDate;
+
+    private String endDate;
+
+    private String cost;
+
+    private String description;
+
     private String createTime;
+
     private String createBy;
+
     private String editTime;
+
     private String editBy;
-    private String img;
+
 
 }

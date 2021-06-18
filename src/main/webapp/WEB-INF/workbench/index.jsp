@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -110,12 +111,6 @@
                             <input type="text" class="form-control" id="confirmPwd">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label  class="col-sm-2 control-label">上传头像</label>
-                        <div class="col-sm-10">
-                            <input type="file" name="img" id="img">
-                        </div>
-                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -127,6 +122,41 @@
         </div>
     </div>
 </div>
+
+
+<!-- 修改头像的模态窗口 -->
+<%--<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">--%>
+<div class="modal fade" id="editPhoModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document" style="width: 30%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">更换头像</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form" >
+
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">上传头像</label>
+                        <div class="col-sm-10">
+                            <input type="file" name="img" id="img">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary"  id="changePho_btn"  data-target="#editPhoModal"
+                        onclick="changePho()">更新
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <!-- 退出系统的模态窗口 -->
 <div class="modal fade" id="exitModal" role="dialog">
@@ -151,14 +181,23 @@
 
 <!-- 顶部 -->
 <div id="top" style="height: 50px; background-color: #3C3C3C; width: 100%;">
-    <div style="position: absolute; top: 5px; left: 0px; font-size: 30px; font-weight: 400; color: white; font-family: 'times new roman'">
+    <div style="position: absolute; top: 5px; left: 5px; font-size: 30px; font-weight: 400; color: white; font-family: 'times new roman'">
         CRM &nbsp;<span style="font-size: 12px;">&copy;2017&nbsp;动力节点</span></div>
     <div style="position: absolute; top: 15px; right: 15px;">
         <ul>
             <li class="dropdown user-dropdown">
                 <a href="javascript:void(0)" style="text-decoration: none; color: white;" class="dropdown-toggle"
                    data-toggle="dropdown">
-                    <span class="glyphicon glyphicon-user"></span> ${user.name} <span class="caret"></span>
+                    <c:choose >
+                        <c:when test="${not empty user.img}">
+
+                            <img src="${user.img}" height="30" width="30" id="headPho" alt="">
+                        </c:when>
+                        <c:otherwise>
+                            <img src="/crm/upload/default.jpg" height="30" width="30" id="headPho" alt="">
+                        </c:otherwise>
+                    </c:choose>
+                    ${user.name} <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" id="systemSet">
                     <li><a href="../settings/index.html"><span class="glyphicon glyphicon-wrench"></span> 系统设置</a></li>
@@ -166,6 +205,8 @@
                             class="glyphicon glyphicon-file"></span> 我的资料</a></li>
                     <li><a href="javascript:void(0)" data-toggle="modal" data-target="#editPwdModal" id="changePwd"><span
                             class="glyphicon glyphicon-edit"></span> 修改密码</a></li>
+                    <li><a href="javascript:void(0)" data-toggle="modal" data-target="#editPhoModal" id="changePho"><span
+                            class="glyphicon glyphicon-user"></span> 更换头像</a></li>
                     <li><a href="javascript:void(0);" data-toggle="modal" data-target="#exitModal"><span
                             class="glyphicon glyphicon-off"></span> 退出</a></li>
                 </ul>
@@ -248,10 +289,10 @@
 <div id="down" style="height: 30px; width: 100%; position: absolute;bottom: 0px;"></div>
 <script>
     <%--		点击按钮触发的登出方法--%>
-
     function logOut() {
         location.href = "/crm/settings/user/logout"
     }
+
 
     //当原密码窗口失去焦点时，使用异步验证原密码是否正确
     $("#oldPwd").blur(function () {
@@ -259,16 +300,18 @@
             layer.msg("请输入原密码", {icon: 5})
             $("#oldPwd").focus();
         } else {
-            $.post("/crm/settings/user/verifyOldPwd", {loginPwd: $(this).val()}, function (result) {
-                if (!result.ok) {
+            $.post("/crm/settings/user/verifyOldPwd",
+                {loginPwd: $(this).val()},
+                    function (result) {
+                        if (!result.ok) {
 
-                    layer.msg(result.message, {icon: 5})
-                    $("#oldPwd").val("")
-                    $("#oldPwd").focus();
+                            layer.msg(result.message, {icon: 5})
+                            $(this).val("")
+                            $(this).focus();
 
+                        }
+                    }, "json");
                 }
-            }, "json");
-        }
     });
 
     //当再次输入密码窗口失去焦点时，使用异步判断是否两次输入密码一致
@@ -291,41 +334,62 @@
             }
     }
 
-    //上传图片
+    //上传图片，上传完成之后显示预览
     $("#img").change(function () {
         $.ajaxFileUpload({
             url:"/crm/settings/user/upload",
             fileElementId: "img",
             dataType:"json",
             success: function (data,status) {
-                console.log(data.message)
+                if (!data.ok) {
+                    layer.msg(data.message, {icon: 5});
+                } else {
+                    layer.msg(data.message, {icon: 1});
+                    $("#headPho").prop("src",data.t)
+                }
             }
         })
     });
 
     //修改密码
     function changePwd1() {
+    $.post("/crm/settings/user/changePwd",
+        {newPwd:$("#newPwd").val()},
+        function (result) {
+            if (!result.ok) {
+                layer.msg("修改失败，请重试", {icon: 5});
+            } else {
+                layer.msg("修改成功，即将跳往登录页面", {icon: 1})
 
-            $.post("/crm/settings/user/changePwd",
-                {newPwd:$("#newPwd").val()},
+                setTimeout(function () {
+                    layer.msg('3');
+                },1000)
+                setTimeout(function () {
+                    layer.msg('2');
+                },2000)
+                setTimeout(function () {
+                    layer.msg('1');
+                    logOut()
+                },3000)
+            }
+        },"json");
+    }
+
+    //点击更新按钮将图片放入到数据库中
+    function changePho() {
+        if ($("#img").val() !== null && $("#img").val() !== '') {
+            $.post("/crm/settings/user/changePho",
+                {img: $("#headPho").attr("src")},
                 function (result) {
                     if (!result.ok) {
-                        layer.msg("修改失败，请重试", {icon: 5});
+                        layer.msg(result.message, {icon: 5});
                     } else {
-                        layer.msg("修改成功，即将跳往登录页面", {icon: 1})
-
-                        setTimeout(function () {
-                            layer.msg('3');
-                        },1000)
-                        setTimeout(function () {
-                            layer.msg('2');
-                        },2000)
-                        setTimeout(function () {
-                            layer.msg('1');
-                            logOut()
-                        },3000)
+                        layer.msg(result.message, {icon: 3});
                     }
-                },"json");
+                }, "json");
+        }
+            $("#editPhoModal").modal("hide");
+
     }
 
 </script>

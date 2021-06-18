@@ -1,7 +1,7 @@
 package com.Hwang.crm.settings.service.Impl;
 
-import com.Hwang.crm.base.exception.UserEnum;
-import com.Hwang.crm.base.exception.UserException;
+import com.Hwang.crm.base.exception.CrmEnum;
+import com.Hwang.crm.base.exception.CrmException;
 import com.Hwang.crm.base.util.DateTimeUtil;
 import com.Hwang.crm.base.util.MD5Util;
 import com.Hwang.crm.settings.bean.User;
@@ -34,20 +34,20 @@ public class UserServicesImpl implements UserService {
 
 //        这里只验证了账号和密码，如果集合长度为0，则说明账号密码错误
         if (users.size() == 0) {
-            throw new UserException(UserEnum.LOGIN_ACCOUNT);
+            throw new CrmException(CrmEnum.LOGIN_ACCOUNT);
         } else {
             User user1 = users.get(0);
             //        验证是否失效
             if (user1.getExpireTime().compareTo(DateTimeUtil.getSysTime()) < 0) {
-                throw new UserException(UserEnum.LOGIN_EXPIRE_TIME);
+                throw new CrmException(CrmEnum.LOGIN_EXPIRE_TIME);
             }
 //            验证是否被锁定
             if ("0".equals(user1.getLockState())) {
-                throw new UserException(UserEnum.LOGIN_LOCKED);
+                throw new CrmException(CrmEnum.LOGIN_LOCKED);
             }
 //            验证ip地址是否允许
             if (!user1.getAllowIps().contains(user.getAllowIps())) {
-                throw new UserException(UserEnum.LOGIN_IPS);
+                throw new CrmException(CrmEnum.LOGIN_IPS);
             }
         }
         return users.get(0);
@@ -59,7 +59,7 @@ public class UserServicesImpl implements UserService {
     public void verifyOldPwd(User user) {
         List<User> users = userMapper.select(user);
         if (users.size() == 0) {
-            throw new UserException(UserEnum.LOGIN_verifyOldPwd);
+            throw new CrmException(CrmEnum.LOGIN_verifyOldPwd);
         }
     }
 
@@ -72,5 +72,14 @@ public class UserServicesImpl implements UserService {
         userMapper.updateByPrimaryKeySelective(user);
 
 
+    }
+
+    @Override
+    public void updatePho(User user) {
+
+        int i = userMapper.updateByPrimaryKeySelective(user);
+        if (i == 0) {
+            throw new CrmException(CrmEnum.CHANGE_IMG);
+        }
     }
 }

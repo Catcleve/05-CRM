@@ -5,8 +5,9 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class ResultVo implements Serializable {
+public class ResultVo<T> implements Serializable {
 
     private boolean isOk;
     private String message;
+    private T t;
 }

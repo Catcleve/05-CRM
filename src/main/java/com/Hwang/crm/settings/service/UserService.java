@@ -9,4 +9,6 @@ public interface UserService {
     void verifyOldPwd(User user);
 
     void updatePwd(User user);
+
+    void updatePho(User user);
 }
