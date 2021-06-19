@@ -1,6 +1,11 @@
 package com.Hwang.crm.workbench.service.Impl;
 
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
+import com.Hwang.crm.base.exception.CrmEnum;
+import com.Hwang.crm.base.exception.CrmException;
+import com.Hwang.crm.base.util.DateTimeUtil;
+import com.Hwang.crm.base.util.UUIDUtil;
 import com.Hwang.crm.settings.bean.User;
 import com.Hwang.crm.settings.mapper.UserMapper;
 import com.Hwang.crm.workbench.bean.Activity;
@@ -8,11 +13,13 @@ import com.Hwang.crm.workbench.mapper.ActivityMapper;
 import com.Hwang.crm.workbench.service.ActivityService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.security.cert.CRLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +32,8 @@ public class ActivityServiceImpl implements ActivityService {
     @Resource
     private UserMapper userMapper;
 
+
+//    多条件模糊查询
     @Override
     public PageInfo<Activity> list(PageInfo<Activity> pageInfo, Activity activity) {
 
@@ -65,11 +74,52 @@ public class ActivityServiceImpl implements ActivityService {
 //        分页助手需要写在这里，如果写在controller，会导致给上面的user查询分页
         PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
         List<Activity> activities = activityMapper.selectByExample(example);
-        PageInfo<Activity> pageInfo1 = new PageInfo<>(activities);
-        for (Activity activity1 : pageInfo1.getList()) {
-            User user = userMapper.selectByPrimaryKey(activity1.getOwner());
-            activity1.setOwner(user.getName());
+        pageInfo = new PageInfo<>(activities);
+        for (Activity active : pageInfo.getList()) {
+            User user = userMapper.selectByPrimaryKey(active.getOwner());
+            active.setOwner(user.getName());
         }
-        return pageInfo1;
+        return pageInfo;
+    }
+
+//    获取所有user给下拉框使用
+    @Override
+    public List<User> getUser() {
+        Example example = new Example(User.class);
+        example.selectProperties("id", "name");
+        return userMapper.selectByExample(example);
+    }
+
+
+//    添加市场活动
+    @Override
+    public void saveActivity(Activity activity) {
+        activity.setId(UUIDUtil.getUUID());
+        activity.setCreateTime(DateTimeUtil.getSysTime());
+        int i = activityMapper.insertSelective(activity);
+        if (i == 0) {
+            throw new CrmException(CrmEnum.ACTIVITY_ADD);
+        }
+    }
+
+//    修改市场活动
+    @Override
+    public void updateActivityById(Activity activity) {
+        activity.setEditTime(DateTimeUtil.getSysTime());
+        int i = activityMapper.updateByPrimaryKeySelective(activity);
+        if (i == 0) {
+            throw new CrmException(CrmEnum.ACTIVITY_EDIT);
+        }
+    }
+
+//    删除市场活动，一个或者多个
+    @Override
+    public void deleteActivity(List<String> ids) {
+        Example example = new Example(Activity.class);
+        example.createCriteria().andIn("id",ids);
+        int i = activityMapper.deleteByExample(example);
+        if (i <= 0) {
+            throw new CrmException(CrmEnum.ACTIVITY_DELETE);
+        }
     }
 }

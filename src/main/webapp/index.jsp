@@ -3,15 +3,15 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link href="jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
-    <script type="text/javascript" src="jquery/jquery-1.11.1-min.js"></script>
-    <script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="jquery/layer/layer/layer.js"></script>
+    <script type="text/javascript" src="/crm/jquery/jquery-1.11.1-min.js"></script>
+    <link href="/crm/jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="/crm/jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/crm/jquery/layer/layer/layer.js"></script>
     <title>登录</title>
 </head>
 <body onkeydown="keyLogin()">
 <div style="position: absolute; top: 0; left: 0; width: 60%;">
-    <img src="image/IMG_7114.JPG" style="width: 100%; position: relative; top: 50px;">
+    <img src="/crm/image/IMG_7114.JPG" style="width: 100%; position: relative; top: 50px;">
 </div>
 <div id="top" style="height: 50px; background-color: #3C3C3C; width: 100%;">
     <div style="position: absolute; top: 5px; left: 0; font-size: 30px; font-weight: 400; color: white; font-family: 'times new roman'">

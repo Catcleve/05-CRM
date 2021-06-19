@@ -7,3 +7,7 @@
 
 $.get("",{},function(data){},'json');
 $.post("",{},function(data){},'json');
+layer.msg(result.message, {icon: 5});
+
+    <script type="text/javascript" src="/crm/jquery/layer/layer/layer.js"></script>
+    <script type="text/javascript" src="/crm/jquery/ajaxfileupload.js"></script>

@@ -9,7 +9,10 @@ public enum CrmEnum {
     LOGIN_verifyOldPwd("001-05", "原密码错误"),
     UPLOAD_SUFFIX("001-006","文件类型错误"),
     UPLOAD_SIZE("001-007","图片过大！"),
-    CHANGE_IMG("001-008","头像修改失败，请联系管理员！");
+    CHANGE_IMG("001-008","头像修改失败，请联系管理员！"),
+    ACTIVITY_ADD("002-001","添加活动失败，请联系管理员！"),
+    ACTIVITY_EDIT("002-002","修改活动失败，请联系管理员！"),
+    ACTIVITY_DELETE("002-003","删除失败，请刷新后重试！");
 
     private String typeCode;
     private String message;
