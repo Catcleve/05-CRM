@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ActivityController {
@@ -28,10 +30,18 @@ public class ActivityController {
 
 //  获取所有管理员
     @RequestMapping("/workbench/activity/getUser")
-    public List<User> getUser(PageInfo<Activity> pageInfo, Activity activity) {
+    public List<User> getUser() {
 
         return activityService.getUser();
+    }
 
+    //  获取所有管理员，返回map集合，更高效
+    @RequestMapping("/workbench/activity/getUser1")
+    public Map<String,String> getUser1() {
+        HashMap<String, String> map = new HashMap<>();
+        activityService.getUser().forEach(user -> map.put(user.getName(),user.getId()));
+
+        return map;
     }
 
 //    添加市场活动

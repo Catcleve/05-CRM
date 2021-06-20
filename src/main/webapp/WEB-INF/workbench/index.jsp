@@ -282,6 +282,10 @@
         <iframe style="border-width: 0px; width: 100%; height: 100%;" name="workareaFrame"></iframe>
     </div>
 
+    <form id="userForm">
+
+    </form>
+
 </div>
 
 <div id="divider2" style="height: 1px; width: 100%; position: absolute;bottom: 30px; background-color: #B3B3B3;"></div>
@@ -293,6 +297,7 @@
     function logOut() {
         location.href = "/crm/settings/user/logout"
     }
+
 
 
     //当原密码窗口失去焦点时，使用异步验证原密码是否正确
@@ -395,6 +400,27 @@
             return false;
         }
     }
+
+    //获取含有name和id的userMap
+    function getUser() {
+        let userMap = new Map();
+        $.ajaxSetup({
+            async : false
+        });
+        $.post("/crm/workbench/activity/getUser1", function (data) {
+            userMap = data
+            // $.each($(data), function (index, item) {
+            //     userMap.set(item.id,item.name)
+            // });
+        }, 'json')
+        return userMap
+    }
+
+    // var userMap = new Map()
+    //声明全局变量
+    const userMap = $(getUser());
+    console.log(userMap.attr("b7658115358d4f3ea22f31604d721a18"))
+
 
 </script>
 </body>

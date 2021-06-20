@@ -344,12 +344,28 @@
                 });
 
             //    抽取出回显下拉框的方法
+            // function opSelect($select) {
+            //     $.post("/crm/workbench/activity/getUser", function (data) {
+            //         data.forEach((item,index) =>{
+            //             $select.append(`<option value='` + item.id + `'>` + item.name + `</option>`)
+            //         })
+            //
+            //         // $.each($(data), function (index, item) {
+            //         //     $select.append(`<option value='` + item.id + `'>` + item.name + `</option>`)
+            //         // });
+            //     }, 'json');
+            // }
+            //回显下拉框，返回含有user id和name的对象
             function opSelect($select) {
-                $.post("/crm/workbench/activity/getUser", function (data) {
-                    $.each($(data), function (index, item) {
-                        $select.append(`<option value='` + item.id + `'>` + item.name + `</option>`)
-                    });
-                }, 'json');
+
+                //从父元素拿到缓存的user信息对象，参考src/main/webapp/WEB-INF/workbench/index.jsp下方
+                const user = window.parent.userMap[0];
+                //遍历，建立下拉框
+                $.each(user, function (index,item) {
+                    $select.append(`<option value='` + item + `'>` + index + `</option>`)
+                });
+                //返回  给需要回显下拉框的编辑页面使用
+                return user;
             }
 
             //点击添加按钮之后启动方法
@@ -360,6 +376,7 @@
                 $("#addForm input,textarea").val("")
                 //    回显下拉框
                 opSelect($select)
+
             }
 
             //   点击添加的提交按钮
@@ -402,20 +419,14 @@
                     //显示模态框
                     $("#editActivityModal").modal("show")
 
-                    //拿到json对象
+                    //拿到放在input复选框上面的json对象
                     const active = JSON.parse($activity.val());
 
-                    //    回显下拉框
-                    $.post("/crm/workbench/activity/getUser", function (data) {
+                    //使用opSelect()方法获取到存放user name和id 的对象，转为map集合
+                    let userList = new Map(Object.entries(opSelect($select)));
 
-                        $.each($(data), function (index, item) {
-                            $select.append(`<option value='` + item.id + `'>` + item.name + `</option>`)
-                            if (item.name === active.owner) {
-                                $select.val([item.id])
-                            }
-                        });
-                    }, 'json');
-
+                    console.log(userList)
+                    $select.val([userList.get(active.owner)])
                     $("#edit-id").val(active.id)
                     $("#edit-marketActivityName").val(active.name)
                     $("#edit-startTime").val(active.startDate)
