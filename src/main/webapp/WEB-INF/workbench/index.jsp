@@ -140,8 +140,9 @@
 
                     <div class="form-group">
                         <label  class="col-sm-2 control-label">上传头像</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-10" id="img_class">
                             <input type="file" name="img" id="img">
+
                         </div>
                     </div>
                 </form>
@@ -335,10 +336,10 @@
     }
 
     //上传图片，上传完成之后显示预览
-    $("#img").change(function () {
+    $("#img_class").on("change", "#img", function () {
         $.ajaxFileUpload({
             url:"/crm/settings/user/upload",
-            fileElementId: "img",
+            fileElementId: ["img"],
             dataType:"json",
             success: function (data,status) {
                 if (!data.ok) {
@@ -377,19 +378,22 @@
 
     //点击更新按钮将图片放入到数据库中
     function changePho() {
-        if ($("#img").val() !== null && $("#img").val() !== '') {
+        const $img = $("#img");
+        if ($img.val() !== null && $img.val() !== '') {
             $.post("/crm/settings/user/changePho",
                 {img: $("#headPho").attr("src")},
                 function (result) {
                     if (!result.ok) {
                         layer.msg(result.message, {icon: 5});
                     } else {
-                        layer.msg(result.message, {icon: 3});
+                        layer.msg(result.message, {icon: 6});
                     }
                 }, "json");
-        }
             $("#editPhoModal").modal("hide");
-
+        } else {
+            layer.msg("请选择头像", {icon: 5})
+            return false;
+        }
     }
 
 </script>

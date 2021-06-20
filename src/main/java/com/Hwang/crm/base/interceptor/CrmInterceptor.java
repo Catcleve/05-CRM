@@ -7,11 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class CrmInterceptor extends HandlerInterceptorAdapter {
-    @Override
-    public void afterConcurrentHandlingStarted(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("request = " + request + ", response = " + response + ", handler = " + handler);
-        super.afterConcurrentHandlingStarted(request, response, handler);
-    }
+
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
@@ -20,6 +16,7 @@ public class CrmInterceptor extends HandlerInterceptorAdapter {
         String requestURI = request.getRequestURI();
         StringBuffer requestURL = request.getRequestURL();
         String contextPath = request.getContextPath();
+        String realPath = request.getSession().getServletContext().getRealPath("/123");
         Object user = request.getSession().getAttribute("user");
 
         if (user == null) {

@@ -12,8 +12,8 @@ import java.util.Arrays;
 
 public class UploadUtil {
 
-    public static ResultVo fileUpload(MultipartFile[] img, HttpServletRequest request) {
-        ResultVo resultVo = new ResultVo();
+    public static ResultVo<Object> fileUpload(MultipartFile[] img, HttpServletRequest request) {
+        ResultVo<Object> resultVo = new ResultVo<>();
         //        先搞个文件上传的位置
         String path = request.getSession().getServletContext().getRealPath("/upload");
         //        创建文件夹对象
@@ -40,11 +40,11 @@ public class UploadUtil {
                 //        把文件放入硬盘
                 multipartFile.transferTo(new File(path + File.separator + name));
 //                获取文件的路径，返回给页面
-                path = request.getContextPath() + "/upload/" + name;
+                String imagePath = request.getContextPath() + "/upload/" + name;
 
                 resultVo.setOk(true);
                 resultVo.setMessage("上传成功");
-                resultVo.setT(path);
+                resultVo.setT(imagePath);
             } catch (CrmException e1) {
                 resultVo.setMessage(e1.getMessage());
                 return resultVo;
@@ -62,9 +62,9 @@ public class UploadUtil {
     }
 
     private static void verifySuffix(String name) {
-        String[] imgs = {".jpg", ".png", ".jpeg", ".gif"};
+        String[] images = {".jpg", ".png", ".jpeg", ".gif"};
         String substring = name.substring(name.lastIndexOf("."));
-        if (!Arrays.asList(imgs).contains(substring)) {
+        if (!Arrays.asList(images).contains(substring)) {
             throw new CrmException(CrmEnum.UPLOAD_SUFFIX);
         }
     }
