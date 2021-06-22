@@ -12,7 +12,8 @@ public enum CrmEnum {
     CHANGE_IMG("001-008","头像修改失败，请联系管理员！"),
     ACTIVITY_ADD("002-001","添加活动失败，请联系管理员！"),
     ACTIVITY_EDIT("002-002","修改活动失败，请联系管理员！"),
-    ACTIVITY_DELETE("002-003","删除失败，请刷新后重试！");
+    ACTIVITY_DELETE("002-003","删除失败，请刷新后重试！"),
+    REMARK_INSERT("003-001","添加备注失败，请联系管理员！");
 
     private String typeCode;
     private String message;

@@ -51,6 +51,6 @@
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/jquery/*</url-pattern>
-        <url-pattern>/images/*</url-pattern>
+        <url-pattern>/image/*</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -1,6 +1,5 @@
 package com.Hwang.crm.workbench.service.Impl;
 
-import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.Hwang.crm.base.exception.CrmEnum;
 import com.Hwang.crm.base.exception.CrmException;
@@ -9,17 +8,18 @@ import com.Hwang.crm.base.util.UUIDUtil;
 import com.Hwang.crm.settings.bean.User;
 import com.Hwang.crm.settings.mapper.UserMapper;
 import com.Hwang.crm.workbench.bean.Activity;
+import com.Hwang.crm.workbench.bean.ActivityRemark;
 import com.Hwang.crm.workbench.mapper.ActivityMapper;
+import com.Hwang.crm.workbench.mapper.ActivityRemarkMapper;
 import com.Hwang.crm.workbench.service.ActivityService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.security.cert.CRLException;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +31,9 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Resource
     private UserMapper userMapper;
+
+    @Autowired
+    private ActivityRemarkMapper activityRemarkMapper;
 
 
 //    多条件模糊查询
@@ -47,7 +50,6 @@ public class ActivityServiceImpl implements ActivityService {
         if (StrUtil.isNotEmpty(activity.getName())) {
             criteria.andLike("name", "%" + activity.getName() + "%");
         }
-
 
 //         当owner不为空时，通过owner模糊查询出符合条件的user对象，拿到id，然后进行activity查询
         if (StrUtil.isNotEmpty(activity.getOwner())) {
@@ -71,15 +73,31 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
 
+
 //        分页助手需要写在这里，如果写在controller，会导致给上面的user查询分页
         PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
         List<Activity> activities = activityMapper.selectByExample(example);
         pageInfo = new PageInfo<>(activities);
         for (Activity active : pageInfo.getList()) {
             User user = userMapper.selectByPrimaryKey(active.getOwner());
+            getActivityRemark(active);
             active.setOwner(user.getName());
         }
         return pageInfo;
+    }
+
+
+
+    //    通过activity获取对应的activityRemark
+    public void getActivityRemark(Activity active){
+        Example remarkExample = new Example(ActivityRemark.class);
+        remarkExample.createCriteria().andEqualTo("activityId", active.getId());
+        List<ActivityRemark> activityRemarks = activityRemarkMapper.selectByExample(remarkExample);
+        activityRemarks.forEach(activityRemark -> {
+            User user = userMapper.selectByPrimaryKey(activityRemark.getOwner());
+            activityRemark.setImg(user.getImg());
+        });
+        active.setActivityRemarks(activityRemarks);
     }
 
 //    获取所有user给下拉框使用
@@ -89,7 +107,6 @@ public class ActivityServiceImpl implements ActivityService {
         example.selectProperties("id", "name");
         return userMapper.selectByExample(example);
     }
-
 
 //    添加市场活动
     @Override
@@ -104,7 +121,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 //    修改市场活动
     @Override
-    public void updateActivityById(Activity activity) {
+    public void updateActivityById(Activity activity ) {
         activity.setEditTime(DateTimeUtil.getSysTime());
         int i = activityMapper.updateByPrimaryKeySelective(activity);
         if (i == 0) {

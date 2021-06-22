@@ -4,12 +4,14 @@ import com.Hwang.crm.base.bean.ResultVo;
 import com.Hwang.crm.base.exception.CrmException;
 import com.Hwang.crm.settings.bean.User;
 import com.Hwang.crm.workbench.bean.Activity;
+import com.Hwang.crm.workbench.service.ActivityRemarkService;
 import com.Hwang.crm.workbench.service.ActivityService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +22,8 @@ public class ActivityController {
 
     @Autowired
     private ActivityService activityService;
+
+
 
 //    分页多条件模糊查询
     @RequestMapping("/workbench/activity/list")
@@ -39,7 +43,7 @@ public class ActivityController {
     @RequestMapping("/workbench/activity/getUser1")
     public Map<String,String> getUser1() {
         HashMap<String, String> map = new HashMap<>();
-        activityService.getUser().forEach(user -> map.put(user.getName(),user.getId()));
+        activityService.getUser().forEach(user -> map.put(user.getId(),user.getName()));
 
         return map;
     }
@@ -60,8 +64,9 @@ public class ActivityController {
 
 //  编辑市场活动
     @RequestMapping("/workbench/activity/updateActivity")
-    public ResultVo<Object> updateActivity(Activity activity) {
+    public ResultVo<Object> updateActivity(Activity activity , HttpSession session) {
 
+        activity.setEditBy(((User)session.getAttribute("user")).getName());
         ResultVo<Object> resultVo = new ResultVo<>();
 
         try {

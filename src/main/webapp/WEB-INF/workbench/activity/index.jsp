@@ -208,7 +208,7 @@
                             </div>
                         </div>
 
-                        <button type="button" onclick="goPage(1,3, $('#queryForm'))" class="btn btn-default">查询</button>
+                        <button type="button" onclick="goPage(1,5)" class="btn btn-default">查询</button>
 
                     </form>
                 </div>
@@ -286,7 +286,7 @@
                             $("#activeList").append(`<tr class="active" >
                                     <td><input type="checkbox" class="zzz" value = '` + str + `'/></td>
                                     <td><a style="text-decoration: none; cursor: pointer;"
-                                    onclick="window.location.href='detail.jsp';">` + item.name + `</a></td>
+                                    onclick='remark_detail(` + str + `)'>` + item.name + `</a></td>
                                     <td>` + item.owner + `</td>
                                     <td>` + item.startDate + `</td>
                                     <td>` + item.endDate + `</td>
@@ -331,6 +331,7 @@
                 }
             })
 
+            //日历插件使用
             $("#edit-startTime ,#edit-endTime,#create-startTime,#create-endTime,#startTime,#endTime")
                 .datetimepicker({
                     language: "zh-CN",
@@ -359,10 +360,11 @@
             function opSelect($select) {
 
                 //从父元素拿到缓存的user信息对象，参考src/main/webapp/WEB-INF/workbench/index.jsp下方
-                const user = window.parent.userMap[0];
+                let user = window.parent.userMap;
+                console.log(user)
                 //遍历，建立下拉框
                 $.each(user, function (index,item) {
-                    $select.append(`<option value='` + item + `'>` + index + `</option>`)
+                    $select.append(`<option value='` + index + `'>` + item + `</option>`)
                 });
                 //返回  给需要回显下拉框的编辑页面使用
                 return user;
@@ -424,9 +426,13 @@
 
                     //使用opSelect()方法获取到存放user name和id 的对象，转为map集合
                     let userList = new Map(Object.entries(opSelect($select)));
-
+                    //遍历，然后选中
+                    userList.forEach(((value, key) => {
+                        if (value === active.owner) {
+                            $select.val([key])
+                        }
+                    }))
                     console.log(userList)
-                    $select.val([userList.get(active.owner)])
                     $("#edit-id").val(active.id)
                     $("#edit-marketActivityName").val(active.name)
                     $("#edit-startTime").val(active.startDate)
@@ -497,8 +503,15 @@
                 }
             }
 
-        </script>
+            //    点击名称，跳转到detail页面
+            function remark_detail(data) {
+                //给父页面公共变量赋值，等于点击的活动对象
+                parent.activityRemark = data
+                window.location.href='/crm/toView/workbench/activity/detail';
 
+            }
+
+        </script>
 
     </body>
 </html>

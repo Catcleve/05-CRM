@@ -403,7 +403,7 @@
 
     //获取含有name和id的userMap
     function getUser() {
-        let userMap = new Map();
+        let userMap
         $.ajaxSetup({
             async : false
         });
@@ -413,13 +413,17 @@
             //     userMap.set(item.id,item.name)
             // });
         }, 'json')
+        console.log(userMap)
         return userMap
     }
 
-    // var userMap = new Map()
+
     //声明全局变量
-    const userMap = $(getUser());
-    console.log(userMap.attr("b7658115358d4f3ea22f31604d721a18"))
+    var userMap = getUser();
+    console.log(userMap)
+    // console.log(userMap.attr("b7658115358d4f3ea22f31604d721a18"))
+
+    var activityRemark
 
 
 </script>
