@@ -20,7 +20,8 @@ public class CrmInterceptor extends HandlerInterceptorAdapter {
         Object user = request.getSession().getAttribute("user");
 
         if (user == null) {
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
+//            request.getRequestDispatcher("/index.jsp").forward(request, response);
+            response.sendRedirect(request.getContextPath()+"/");
             return false;
         }
 

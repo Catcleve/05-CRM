@@ -50,9 +50,11 @@ public class ActivityController {
 
 //    添加市场活动
     @RequestMapping("/workbench/activity/saveActivity")
-    public ResultVo<Object> saveActivity(Activity activity) {
+    public ResultVo<Object> saveActivity(Activity activity,HttpSession session) {
         ResultVo<Object> resultVo = new ResultVo<>();
+        User user = (User) session.getAttribute("user");
         try {
+            activity.setCreateBy(user.getName());
             activityService.saveActivity(activity);
             resultVo.setOk(true);
 

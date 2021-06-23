@@ -13,7 +13,11 @@ public enum CrmEnum {
     ACTIVITY_ADD("002-001","添加活动失败，请联系管理员！"),
     ACTIVITY_EDIT("002-002","修改活动失败，请联系管理员！"),
     ACTIVITY_DELETE("002-003","删除失败，请刷新后重试！"),
-    REMARK_INSERT("003-001","添加备注失败，请联系管理员！");
+    REMARK_INSERT("003-001","添加备注失败，请联系管理员！"),
+    REMARK_DELETE("003-001","删除备注失败，请联系管理员！"),
+    REMARK_UPDATE("003-001","修改备注失败，请联系管理员！"),
+    CUSTOMER_ADD("002-001","添加客户失败，请重试"),
+    CUSTOMER_EDIT("002-001","删除客户失败，请重试"),;
 
     private String typeCode;
     private String message;

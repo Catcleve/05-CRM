@@ -1,3 +1,4 @@
+import com.Hwang.crm.base.cache.DicData;
 import com.Hwang.crm.base.util.MD5Util;
 import com.Hwang.crm.base.util.UUIDUtil;
 import com.Hwang.crm.settings.bean.User;
@@ -73,6 +74,14 @@ public class CrmTest {
         user.setLoginPwd(MD5Util.getMD5("admin"));
         int i = userMapper.updateByPrimaryKeySelective(user);
         System.out.println("i = " + i);
+    }
+
+    @Test
+    public void test07(){
+
+        DicData dicData = new DicData();
+        dicData.getDicMap();
+
     }
 
 

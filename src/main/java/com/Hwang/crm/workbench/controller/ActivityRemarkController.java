@@ -20,13 +20,47 @@ public class ActivityRemarkController {
 
     @RequestMapping("/workbench/activity/insertRemark")
     @ResponseBody
-    public ResultVo<ActivityRemark> insertRemark(ActivityRemark remark, HttpSession session){
+    public ResultVo<ActivityRemark> insertRemark(ActivityRemark remark, HttpSession session) {
         ResultVo<ActivityRemark> resultVo = new ResultVo<>();
         User user = (User) session.getAttribute("user");
         remark.setCreateBy(user.getName());
         remark.setOwner(user.getId());
         try {
             remark = remarkService.insertRemark(remark);
+            remark.setImg(user.getImg());
+            resultVo.setOk(true);
+            resultVo.setT(remark);
+        } catch (CrmException c) {
+            resultVo.setMessage(c.getMessage());
+        }
+        return resultVo;
+    }
+
+    //    删除市场活动备注
+    @RequestMapping("/workbench/activity/deleteRemark")
+    @ResponseBody
+    public ResultVo<Object> deleteRemark(ActivityRemark remark) {
+        ResultVo<Object> resultVo = new ResultVo<>();
+
+        try {
+            remarkService.deleteRemark(remark);
+            resultVo.setOk(true);
+        } catch (CrmException c) {
+            resultVo.setMessage(c.getMessage());
+        }
+        return resultVo;
+    }
+
+
+    //    编辑市场活动
+    @RequestMapping("/workbench/activity/updateRemark")
+    @ResponseBody
+    public ResultVo<ActivityRemark> editRemark(ActivityRemark remark, HttpSession session) {
+        ResultVo<ActivityRemark> resultVo = new ResultVo<>();
+        User user = (User) session.getAttribute("user");
+        try {
+            remark.setEditBy(user.getName());
+            remark = remarkService.editRemark(remark);
             remark.setImg(user.getImg());
             resultVo.setOk(true);
             resultVo.setT(remark);

@@ -26,4 +26,27 @@ public class ActivityRemarkServiceImpl implements ActivityRemarkService {
         }
         return remark;
     }
+
+    @Override
+    public void deleteRemark(ActivityRemark remark) {
+
+        int i = remarkMapper.deleteByPrimaryKey(remark.getId());
+        if (i == 0) {
+            throw new CrmException(CrmEnum.REMARK_DELETE);
+        }
+    }
+
+    @Override
+    public ActivityRemark editRemark(ActivityRemark remark) {
+        remark.setEditTime(DateTimeUtil.getSysTime());
+        remark.setEditFlag("1");
+        int i = remarkMapper.updateByPrimaryKeySelective(remark);
+
+        if (i == 0) {
+            throw new CrmException(CrmEnum.REMARK_UPDATE);
+        }
+
+        remark = remarkMapper.selectByPrimaryKey(remark.getId());
+        return remark;
+    }
 }

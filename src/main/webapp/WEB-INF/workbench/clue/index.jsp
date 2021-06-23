@@ -379,22 +379,8 @@
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">线索来源</div>
-					  <select class="form-control">
-					  	  <option></option>
-					  	  <option>广告</option>
-						  <option>推销电话</option>
-						  <option>员工介绍</option>
-						  <option>外部介绍</option>
-						  <option>在线商场</option>
-						  <option>合作伙伴</option>
-						  <option>公开媒介</option>
-						  <option>销售邮件</option>
-						  <option>合作伙伴研讨会</option>
-						  <option>内部研讨会</option>
-						  <option>交易会</option>
-						  <option>web下载</option>
-						  <option>web调研</option>
-						  <option>聊天</option>
+					  <select class="form-control" id="clueSource_option">
+
 					  </select>
 				    </div>
 				  </div>
@@ -420,15 +406,9 @@
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">线索状态</div>
-					  <select class="form-control">
-					  	<option></option>
-					  	<option>试图联系</option>
-					  	<option>将来联系</option>
-					  	<option>已联系</option>
-					  	<option>虚假线索</option>
-					  	<option>丢失线索</option>
-					  	<option>未联系</option>
-					  	<option>需要条件</option>
+					  <select class="form-control" id="clueState_select">
+
+
 					  </select>
 				    </div>
 				  </div>
@@ -523,5 +503,22 @@
 		</div>
 		
 	</div>
+
+	<script type="text/javascript">
+
+
+		let dirMap = parent.dirMap;
+
+		xx($("#clueSource_option"),"source")
+		xx($("#clueState_select"),"clueState")
+
+		function xx(select,code) {
+			select.append(`<option>请选择</option>`)
+			$(dirMap.get(code)).each(function (i,item) {
+				select.append(`<option value="`+ item.value+ `">`+ item.text+ `</option>`)
+			})
+		}
+
+	</script>
 </body>
 </html>

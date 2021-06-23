@@ -239,7 +239,7 @@
                     class="glyphicon glyphicon-user"></span> 客户</a></li>
             <li class="liClass"><a href="/crm/toView/workbench/contacts/index" target="workareaFrame"><span
                     class="glyphicon glyphicon-earphone"></span> 联系人</a></li>
-            <li class="liClass"><a href="/crm/toView/workbench/transaction/chart/index" target="workareaFrame"><span
+            <li class="liClass"><a href="/crm/toView/workbench/transaction/index" target="workareaFrame"><span
                     class="glyphicon glyphicon-usd"></span> 交易（商机）</a></li>
             <li class="liClass"><a href="/crm/toView/workbench/visit/index" target="workareaFrame"><span
                     class="glyphicon glyphicon-phone-alt"></span> 售后回访</a></li>
@@ -409,23 +409,35 @@
         });
         $.post("/crm/workbench/activity/getUser1", function (data) {
             userMap = data
-            // $.each($(data), function (index, item) {
-            //     userMap.set(item.id,item.name)
-            // });
         }, 'json')
         console.log(userMap)
         return userMap
     }
 
-
     //声明全局变量
-    var userMap = getUser();
-    console.log(userMap)
-    // console.log(userMap.attr("b7658115358d4f3ea22f31604d721a18"))
 
+    //user名称和id的键值对
+    var userMap = getUser();
+    //点击活动名称时把对应的活动信息放入这里
     var activityRemark
 
+    //字典数据
+    var dirMap = getDic();
+    dirMap = new Map(Object.entries(dirMap))
+    function getDic() {
+        let dirMap
+        $.ajaxSetup({
+            async : false
+        });
+        $.post("/crm/workbench/clue/getDic",
+            function(data){
+                dirMap = data
+            },'json');
+        return dirMap
+    }
 
+    //客户信息
+    var customerDetail
 </script>
 </body>
 </html>

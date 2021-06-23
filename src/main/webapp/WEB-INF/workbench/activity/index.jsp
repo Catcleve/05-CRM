@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
+
     <head>
         <meta charset="UTF-8">
 
@@ -26,7 +27,7 @@
         <script type="text/javascript" src="/crm/jquery/ajaxfileupload.js"></script>
 
     </head>
-    <body>
+    <body style="overflow-x:hidden;overflow-y:auto">
 
         <!-- 创建市场活动的模态窗口 -->
         <div class="modal fade" id="createActivityModal" role="dialog">
@@ -82,7 +83,6 @@
                                     <textarea class="form-control" rows="3" id="create-describe" name="description"></textarea>
                                 </div>
                             </div>
-                            <input type="hidden" name="createBy" value="${user.name}">
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -432,7 +432,6 @@
                             $select.val([key])
                         }
                     }))
-                    console.log(userList)
                     $("#edit-id").val(active.id)
                     $("#edit-marketActivityName").val(active.name)
                     $("#edit-startTime").val(active.startDate)
@@ -510,6 +509,7 @@
                 window.location.href='/crm/toView/workbench/activity/detail';
 
             }
+
 
         </script>
 

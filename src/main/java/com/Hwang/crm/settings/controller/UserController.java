@@ -10,11 +10,13 @@ import com.Hwang.crm.settings.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Enumeration;
 
 @Controller
 public class UserController {
@@ -23,7 +25,7 @@ public class UserController {
     private UserService userService;
 
     //    登录方法
-    @RequestMapping("/settings/user/login")
+    @RequestMapping(value = "/settings/user/login",method = RequestMethod.POST)
     @ResponseBody
     public ResultVo login(User user, HttpServletRequest request) {
         ResultVo resultVo = new ResultVo();
@@ -40,6 +42,14 @@ public class UserController {
         }
         resultVo.setOk(true);
         return resultVo;
+    }
+
+    @RequestMapping(value = "/settings/user/login",method = RequestMethod.GET)
+    public String loginErr(HttpServletRequest request) {
+
+        String id = (String) request.getAttribute("id");
+
+        return "redirect:/";
     }
 
     //    登出方法

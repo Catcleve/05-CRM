@@ -2,7 +2,7 @@
 
 
 <link href="/crm/jquery/layer/theme/default/layer.css" type="text/css" rel="stylesheet" />
-<script type="text/javascript" src="/crm/jquery/layer.js"></script>
+<script type="text/javascript" src="/crm/jquery/layer/layer/layer.js"></script>
 
 
 $.get("",{},function(data){},'json');
