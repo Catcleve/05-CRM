@@ -52,7 +52,7 @@
     </script>
 
 </head>
-<body>
+<body style="overflow-x:hidden;overflow-y:auto">
 
 <!-- 删除联系人的模态窗口 -->
 <div class="modal fade" id="removeContactsModal" role="dialog">
@@ -270,7 +270,7 @@
                         <label for="edit-website" class="col-sm-2 control-label">公司网站</label>
                         <div class="col-sm-10" style="width: 300px;">
                             <input type="text" class="form-control" id="edit-website"
-                                   value="http://www.bjpowernode.com">
+                                   value="https://www.bjpowernode.com">
                         </div>
                         <label for="edit-phone" class="col-sm-2 control-label">公司座机</label>
                         <div class="col-sm-10" style="width: 300px;">
@@ -323,6 +323,37 @@
     </div>
 </div>
 
+<!-- 修改客户备注的模态窗口 -->
+<div class="modal fade" id="editRemarkModal" role="dialog">
+
+    <div class="modal-dialog" role="document" style="width: 40%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" >修改备注</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form" id="editForm">
+                    <input type="hidden" name="id" id="editRemark-id">
+                    <div class="form-group">
+                        <label for="edit-describe" class="col-sm-2 control-label">内容</label>
+                        <div class="col-sm-10" style="width: 81%;">
+                            <label for="noteContent"></label>
+                            <textarea class="form-control" rows="3" id="noteContent" name="noteContent"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="updateRemarkBtn" onclick="updateRemark()">更新</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- 返回按钮 -->
 <div style="position: relative; top: 35px; left: 10px;">
     <a href="javascript:void(0);" onclick="window.history.back();"><span class="glyphicon glyphicon-arrow-left"
@@ -332,7 +363,7 @@
 <!-- 大标题 -->
 <div style="position: relative; left: 40px; top: -30px;">
     <div class="page-header">
-        <h3>动力节点 <small><a href="http://www.bjpowernode.com" target="_blank">http://www.bjpowernode.com</a></small></h3>
+        <h3>动力节点 <small><a href="https://www.bjpowernode.com" target="_blank">https://www.bjpowernode.com</a></small></h3>
     </div>
     <div style="position: relative; height: 50px; width: 500px;  top: -72px; left: 700px;">
         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editCustomerModal"><span
@@ -354,7 +385,7 @@
     </div>
     <div style="position: relative; left: 40px; height: 30px; top: 10px;">
         <div style="width: 300px; color: gray;">公司网站</div>
-        <div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>http://www.bjpowernode.com</b></div>
+        <div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>https://www.bjpowernode.com</b></div>
         <div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">公司座机</div>
         <div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>010-84846003</b></div>
         <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
@@ -408,52 +439,22 @@
 
 <!-- 备注 -->
 <div style="position: relative; top: 10px; left: 40px;">
-    <div class="page-header">
+    <div class="page-header" id="customers">
         <h4>备注</h4>
     </div>
 
-    <!-- 备注1 -->
-    <div class="remarkDiv" style="height: 60px;">
-        <img title="zhangsan" src="../../../image/user-thumbnail.png" style="width: 30px; height:30px;">
-        <div style="position: relative; top: -40px; left: 40px;">
-            <h5>哎呦！</h5>
-            <font color="gray">联系人</font> <font color="gray">-</font> <b>李四先生-北京动力节点</b> <small style="color: gray;">
-            2017-01-22 10:10:10 由zhangsan</small>
-            <div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">
-                <a class="myHref" href="javascript:"><span class="glyphicon glyphicon-edit"
-                                                                   style="font-size: 20px; color: #E6E6E6;"></span></a>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <a class="myHref" href="javascript:"><span class="glyphicon glyphicon-remove"
-                                                                   style="font-size: 20px; color: #E6E6E6;"></span></a>
-            </div>
-        </div>
-    </div>
 
-    <!-- 备注2 -->
-    <div class="remarkDiv" style="height: 60px;">
-        <img title="zhangsan" src="../../../image/user-thumbnail.png" style="width: 30px; height:30px;">
-        <div style="position: relative; top: -40px; left: 40px;">
-            <h5>呵呵！</h5>
-            <font color="gray">联系人</font> <font color="gray">-</font> <b>李四先生-北京动力节点</b> <small style="color: gray;">
-            2017-01-22 10:20:10 由zhangsan</small>
-            <div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">
-                <a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit"
-                                                                   style="font-size: 20px; color: #E6E6E6;"></span></a>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-remove"
-                                                                   style="font-size: 20px; color: #E6E6E6;"></span></a>
-            </div>
-        </div>
-    </div>
 
     <div id="remarkDiv" style="background-color: #E6E6E6; width: 870px; height: 90px;">
-        <form role="form" style="position: relative;top: 10px; left: 10px;">
-            <textarea id="remark" class="form-control" style="width: 850px; resize : none;" rows="2"
-                      placeholder="添加备注..."></textarea>
+        <form role="form" style="position: relative;top: 10px; left: 10px;" id="insertForm">
+            <label for="remark"></label>
+            <textarea id="remark" name="noteContent" class="form-control" style="width: 850px; resize : none;" rows="2"
+                                                  placeholder="添加备注..."></textarea>
             <p id="cancelAndSaveBtn" style="position: relative;left: 737px; top: 10px; display: none;">
                 <button id="cancelBtn" type="button" class="btn btn-default">取消</button>
-                <button type="button" class="btn btn-primary">保存</button>
+                <button type="button" class="btn btn-primary" onclick="insertRemark()">保存</button>
             </p>
+            <input type="hidden" name="customerId" id="customerId">
         </form>
     </div>
 </div>
@@ -464,8 +465,8 @@
         <div class="page-header">
             <h4>交易</h4>
         </div>
-        <div style="position: relative;top: 0px;">
-            <table id="activityTable2" class="table table-hover" style="width: 900px;">
+        <div style="position: relative;top: 0;">
+            <table id="customerTable2" class="table table-hover" style="width: 900px;">
                 <thead>
                 <tr style="color: #B3B3B3;">
                     <td>名称</td>
@@ -505,8 +506,8 @@
         <div class="page-header">
             <h4>联系人</h4>
         </div>
-        <div style="position: relative;top: 0px;">
-            <table id="activityTable" class="table table-hover" style="width: 900px;">
+        <div style="position: relative;top: 0;">
+            <table id="customerTable" class="table table-hover" style="width: 900px;">
                 <thead>
                 <tr style="color: #B3B3B3;">
                     <td>名称</td>
@@ -535,5 +536,129 @@
 </div>
 
 <div style="height: 200px;"></div>
+
+<script>
+
+
+    let customer = parent.customerDetail
+
+
+    customers = customer.customerRemarks
+
+
+    function remarkDivHide() {
+
+        //清空
+        $("#remark").val("")
+        //隐藏
+        $("#cancelAndSaveBtn").hide();
+        //设置remarkDiv的高度为130px
+        $("#remarkDiv").css("height", "90px");
+        cancelAndSaveBtnDefault = true;
+    }
+
+
+    //显示备注列表，遍历备注集合，放入页面的方法
+    function remarkList(value) {
+
+        $("#customers").after(`<div id="remark` + value.id + `" class="remarkDiv" style="height: 60px;">
+        <img title="" src="` + value.img + `" style="width: 30px; height:30px;">
+        <div style="position: relative; top: -40px; left: 40px;">
+            <h5 id="content` + value.id + `" >` + value.noteContent + `</h5>
+            <font color="gray">市场活动</font> <font color="gray">-</font> <b>` + customer.name + `</b> <small style="color: gray;">
+            ` + value.createTime + ` 由` + value.createBy + `</small>
+            <div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">
+                <a class="myHref" href="javascript:editRemark('` + value.id + `','` + value.noteContent + `' );">
+                <span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #E6E6E6;"></span></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <a class="myHref" href="javascript:deleteRemark('` + value.id + `');">
+                <span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #E6E6E6;"></span></a>
+                </div>
+            </div>
+        </div>`)
+
+        $(".remarkDiv").mouseover(function () {
+            $(this).children("div").children("div").show();
+        });
+
+        $(".remarkDiv").mouseout(function () {
+            $(this).children("div").children("div").hide();
+        });
+
+        $(".myHref").mouseover(function () {
+            $(this).children("span").css("color", "red");
+        });
+
+        $(".myHref").mouseout(function () {
+            $(this).children("span").css("color", "#E6E6E6");
+        });
+    }
+
+    customers.forEach((value) => {
+        remarkList(value);
+    })
+
+    //新增备注
+    function insertRemark() {
+        let new_remark
+        $("#customerId").val(customer.id)
+        $.ajaxSetup({async : false})
+        $.post("/crm/workbench/customer/insertRemark",
+            $("#insertForm").serialize(),
+            function (data) {
+                if (data.ok) {
+                    layer.msg("添加成功", {icon: 6});
+                    new_remark = data.t
+                    remarkDivHide();
+                } else {
+                    layer.msg(data.message, {icon: 5});
+                }
+            }, 'json');
+        remarkList(new_remark)
+    }
+
+    //删除备注
+    function deleteRemark(id) {
+
+        layer.confirm('确定删除备注吗？', {
+            btn: ['删除','取消'] //按钮
+        }, function(){
+            $.post("/crm/workbench/customer/deleteRemark", {id:id},
+                function(data){
+                    if (data.ok) {
+                        layer.msg("删除成功", {icon: 1});
+                        $("#remark"+id).remove()
+                    } else {
+                        layer.msg(data.message, {icon: 5});
+                    }
+                },'json');
+        });
+    }
+
+    //弹出编辑备注模态框
+    function editRemark(id,note) {
+        $("#editRemarkModal").modal("show");
+        $("#editRemark-id").val(id);
+        $("#noteContent").val(note)
+    }
+
+    //修改备注
+    function updateRemark() {
+        $.post("/crm/workbench/customer/updateRemark",
+            $("#editForm").serialize(),
+            function(data){
+                if (data.ok) {
+                    layer.msg("修改成功", {icon: 1});
+                    $("#content"+ $("#editRemark-id").val()).text($("#noteContent").val())
+                    $("#editRemarkModal").modal("hide");
+                } else {
+                    layer.msg(data.message, {icon: 5});
+                }
+            },'json');
+    }
+
+
+</script>
+
 </body>
 </html>

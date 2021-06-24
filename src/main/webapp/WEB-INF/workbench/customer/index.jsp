@@ -195,9 +195,9 @@
 
                     <div style="position: relative;top: 20px;">
                         <div class="form-group">
-                            <label for="edit-address1" class="col-sm-2 control-label">详细地址</label>
+                            <label for="edit-address" class="col-sm-2 control-label">详细地址</label>
                             <div class="col-sm-10" style="width: 81%;">
-                                <textarea class="form-control" rows="1" id="edit-address1" name="address"></textarea>
+                                <textarea class="form-control" rows="1" id="edit-address" name="address"></textarea>
                             </div>
                         </div>
                     </div>

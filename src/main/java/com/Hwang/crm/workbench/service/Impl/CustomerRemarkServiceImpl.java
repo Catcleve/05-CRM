@@ -4,25 +4,21 @@ import com.Hwang.crm.base.exception.CrmEnum;
 import com.Hwang.crm.base.exception.CrmException;
 import com.Hwang.crm.base.util.DateTimeUtil;
 import com.Hwang.crm.base.util.UUIDUtil;
-import com.Hwang.crm.settings.bean.User;
-import com.Hwang.crm.settings.mapper.UserMapper;
-import com.Hwang.crm.workbench.bean.ActivityRemark;
-import com.Hwang.crm.workbench.mapper.ActivityRemarkMapper;
-import com.Hwang.crm.workbench.service.ActivityRemarkService;
+import com.Hwang.crm.workbench.bean.CustomerRemark;
+import com.Hwang.crm.workbench.mapper.CustomerRemarkMapper;
+import com.Hwang.crm.workbench.service.CustomerRemarkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ActivityRemarkServiceImpl implements ActivityRemarkService {
-
+public class CustomerRemarkServiceImpl implements CustomerRemarkService {
+    
     @Autowired
-    private ActivityRemarkMapper remarkMapper;
+    private CustomerRemarkMapper remarkMapper;
 
-    @Autowired
-    private UserMapper userMapper;
-
+//    添加
     @Override
-    public ActivityRemark insertRemark(ActivityRemark remark) {
+    public CustomerRemark insertRemark(CustomerRemark remark) {
         remark.setId(UUIDUtil.getUUID());
         remark.setCreateTime(DateTimeUtil.getSysTime());
         int i = remarkMapper.insertSelective(remark);
@@ -32,8 +28,9 @@ public class ActivityRemarkServiceImpl implements ActivityRemarkService {
         return remark;
     }
 
+//    删除
     @Override
-    public void deleteRemark(ActivityRemark remark) {
+    public void deleteRemark(CustomerRemark remark) {
 
         int i = remarkMapper.deleteByPrimaryKey(remark.getId());
         if (i == 0) {
@@ -41,8 +38,9 @@ public class ActivityRemarkServiceImpl implements ActivityRemarkService {
         }
     }
 
+//    修改
     @Override
-    public ActivityRemark editRemark(ActivityRemark remark) {
+    public CustomerRemark editRemark(CustomerRemark remark) {
         remark.setEditTime(DateTimeUtil.getSysTime());
         remark.setEditFlag("1");
         int i = remarkMapper.updateByPrimaryKeySelective(remark);
@@ -52,8 +50,6 @@ public class ActivityRemarkServiceImpl implements ActivityRemarkService {
         }
 
         remark = remarkMapper.selectByPrimaryKey(remark.getId());
-        User user = userMapper.selectByPrimaryKey(remark.getOwner());
-        remark.setImg(user.getImg());
         return remark;
     }
 }

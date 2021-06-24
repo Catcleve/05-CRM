@@ -354,6 +354,7 @@
         $("#noteContent").val(note)
     }
 
+    //修改备注
     function updateRemark() {
         $.post("/crm/workbench/activity/updateRemark",
             $("#editForm").serialize(),

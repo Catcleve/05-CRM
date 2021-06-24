@@ -8,7 +8,9 @@ import com.Hwang.crm.base.util.UUIDUtil;
 import com.Hwang.crm.settings.bean.User;
 import com.Hwang.crm.settings.mapper.UserMapper;
 import com.Hwang.crm.workbench.bean.Customer;
+import com.Hwang.crm.workbench.bean.CustomerRemark;
 import com.Hwang.crm.workbench.mapper.CustomerMapper;
+import com.Hwang.crm.workbench.mapper.CustomerRemarkMapper;
 import com.Hwang.crm.workbench.service.CustomerService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -29,8 +31,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Resource
     private UserMapper userMapper;
 
-//    @Autowired
-//    private CustomerRemarkMapper customerRemarkMapper;
+    @Autowired
+    private CustomerRemarkMapper customerRemarkMapper;
 
 
 //    多条件模糊查询
@@ -76,10 +78,10 @@ public class CustomerServiceImpl implements CustomerService {
         PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
         List<Customer> activities = customerMapper.selectByExample(example);
         pageInfo = new PageInfo<>(activities);
-        for (Customer active : pageInfo.getList()) {
-            User user = userMapper.selectByPrimaryKey(active.getOwner());
-//            getCustomerRemark(active);
-            active.setOwner(user.getName());
+        for (Customer custom : pageInfo.getList()) {
+            User user = userMapper.selectByPrimaryKey(custom.getOwner());
+            getCustomerRemark(custom);
+            custom.setOwner(user.getName());
         }
         return pageInfo;
     }
@@ -87,16 +89,17 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     //    通过customer获取对应的customerRemark
-//    public void getCustomerRemark(Customer active){
-//        Example remarkExample = new Example(CustomerRemark.class);
-//        remarkExample.createCriteria().andEqualTo("customerId", active.getId());
-//        List<CustomerRemark> customerRemarks = customerRemarkMapper.selectByExample(remarkExample);
-//        customerRemarks.forEach(customerRemark -> {
-//            User user = userMapper.selectByPrimaryKey(customerRemark.getOwner());
-//            customerRemark.setImg(user.getImg());
-//        });
-//        active.setCustomerRemarks(customerRemarks);
-//    }
+    public void getCustomerRemark(Customer custom){
+        Example remarkExample = new Example(CustomerRemark.class);
+        remarkExample.createCriteria().andEqualTo("customerId", custom.getId());
+        List<CustomerRemark> customerRemarks = customerRemarkMapper.selectByExample(remarkExample);
+        customerRemarks.forEach(customerRemark -> {
+            User user = userMapper.selectByPrimaryKey(customerRemark.getCreateBy());
+            customerRemark.setImg(user.getImg());
+            customerRemark.setCreateBy(user.getName());
+        });
+        custom.setCustomerRemarks(customerRemarks);
+    }
 
 
 //    添加客户

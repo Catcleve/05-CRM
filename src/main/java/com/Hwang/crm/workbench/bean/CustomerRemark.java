@@ -6,29 +6,24 @@ import tk.mybatis.mapper.code.Style;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.List;
+import javax.persistence.Transient;
 
 @Data
-@Table(name = "tbl_customer")
+@Table(name = "tbl_customer_remark")
 @NameStyle(Style.normal)
-public class Customer {
+public class CustomerRemark {
 
   @Id
   private String id;
-  private String owner;
-  private String name;
-  private String website;
-  private String phone;
+  private String noteContent;
   private String createBy;
   private String createTime;
   private String editBy;
   private String editTime;
-  private String contactSummary;
-  private String nextContactTime;
-  private String description;
-  private String address;
-  private List<CustomerRemark> CustomerRemarks;
-
+  private String editFlag;
+  private String customerId;
+  @Transient
+  private String img;
 
 
 }
