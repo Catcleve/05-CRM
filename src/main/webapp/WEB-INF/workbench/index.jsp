@@ -410,7 +410,6 @@
         $.post("/crm/workbench/activity/getUser1", function (data) {
             userMap = data
         }, 'json')
-        console.log(userMap)
         return userMap
     }
 
@@ -418,12 +417,15 @@
 
     //user名称和id的键值对
     var userMap = getUser();
+
     //点击活动名称时把对应的活动信息放入这里
     var activityRemark
 
     //字典数据
     var dirMap = getDic();
+
     dirMap = new Map(Object.entries(dirMap))
+
     function getDic() {
         let dirMap
         $.ajaxSetup({
@@ -439,6 +441,7 @@
     //客户信息
     var customerDetail
 
+    var detail
 
 </script>
 </body>

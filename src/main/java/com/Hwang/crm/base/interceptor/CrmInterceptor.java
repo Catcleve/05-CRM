@@ -5,6 +5,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 
 public class CrmInterceptor extends HandlerInterceptorAdapter {
 
@@ -20,11 +21,23 @@ public class CrmInterceptor extends HandlerInterceptorAdapter {
         Object user = request.getSession().getAttribute("user");
 
         if (user == null) {
-//            request.getRequestDispatcher("/index.jsp").forward(request, response);
+
+
+            PrintWriter out = response.getWriter();
+            out.println("<html>");
+            out.println("<script>");
+            out.println("window.open ('" + request.getContextPath() + "/index.jsp','_top')");
+            out.println("</script>");
+            out.println("</html>");
+            return false;
+
+            /*
+            * 直接使用下面会有在子页面跳转的问题
+             request.getRequestDispatcher("/index.jsp").forward(request, response);
             response.sendRedirect(request.getContextPath()+"/");
             return false;
+            */
         }
-
         return true;
     }
 }

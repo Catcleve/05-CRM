@@ -8,6 +8,22 @@
 $.get("",{},function(data){},'json');
 $.post("",{},function(data){},'json');
 layer.msg(result.message, {icon: 5});
-
+<body style="overflow-x:hidden;overflow-y:auto">
     <script type="text/javascript" src="/crm/jquery/layer/layer/layer.js"></script>
     <script type="text/javascript" src="/crm/jquery/ajaxfileupload.js"></script>
+
+
+
+
+        //回显下拉框，返回含有user id和name的对象
+        function opSelect($select) {
+
+            //从父元素拿到缓存的user信息对象，参考src/main/webapp/WEB-INF/workbench/index.jsp下方
+            let user = window.parent.userMap;
+            //遍历，建立下拉框
+            $.each(user, function (index, item) {
+                $select.append(`<option value='` + index + `'>` + item + `</option>`)
+            });
+            //返回  给需要回显下拉框的编辑页面使用
+            return user;
+        }

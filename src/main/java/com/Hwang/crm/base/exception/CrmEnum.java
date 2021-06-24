@@ -17,7 +17,8 @@ public enum CrmEnum {
     REMARK_DELETE("003-001","删除备注失败，请联系管理员！"),
     REMARK_UPDATE("003-001","修改备注失败，请联系管理员！"),
     CUSTOMER_ADD("002-001","添加客户失败，请重试"),
-    CUSTOMER_EDIT("002-001","删除客户失败，请重试"),;
+    CUSTOMER_EDIT("002-001","删除客户失败，请重试"),
+    CLUE_ADD("002-001","添加线索失败，请重试"),;
 
     private String typeCode;
     private String message;

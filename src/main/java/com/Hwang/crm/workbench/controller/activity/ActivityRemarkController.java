@@ -1,10 +1,10 @@
-package com.Hwang.crm.workbench.controller;
+package com.Hwang.crm.workbench.controller.activity;
 
 import com.Hwang.crm.base.bean.ResultVo;
 import com.Hwang.crm.base.exception.CrmException;
 import com.Hwang.crm.settings.bean.User;
-import com.Hwang.crm.workbench.bean.CustomerRemark;
-import com.Hwang.crm.workbench.service.CustomerRemarkService;
+import com.Hwang.crm.workbench.bean.ActivityRemark;
+import com.Hwang.crm.workbench.service.ActivityRemarkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,21 +13,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class CustomerRemarkController {
+public class ActivityRemarkController {
 
     @Autowired
-    private CustomerRemarkService remarkService;
+    private ActivityRemarkService remarkService;
 
-//    添加客户备注
-    @RequestMapping("/workbench/customer/insertRemark")
+//    添加市场活动备注
+    @RequestMapping("/workbench/activity/insertRemark")
     @ResponseBody
-    public ResultVo<CustomerRemark> insertRemark(CustomerRemark remark, HttpSession session) {
-        ResultVo<CustomerRemark> resultVo = new ResultVo<>();
+    public ResultVo<ActivityRemark> insertRemark(ActivityRemark remark, HttpSession session) {
+        ResultVo<ActivityRemark> resultVo = new ResultVo<>();
         User user = (User) session.getAttribute("user");
-        remark.setCreateBy(user.getId());
+        remark.setCreateBy(user.getName());
+        remark.setOwner(user.getId());
         try {
             remark = remarkService.insertRemark(remark);
-            remark.setCreateBy(user.getName());
             remark.setImg(user.getImg());
             resultVo.setOk(true);
             resultVo.setT(remark);
@@ -37,10 +37,10 @@ public class CustomerRemarkController {
         return resultVo;
     }
 
-    //    删除客户备注
-    @RequestMapping("/workbench/customer/deleteRemark")
+    //    删除市场活动备注
+    @RequestMapping("/workbench/activity/deleteRemark")
     @ResponseBody
-    public ResultVo<Object> deleteRemark(CustomerRemark remark) {
+    public ResultVo<Object> deleteRemark(ActivityRemark remark) {
         ResultVo<Object> resultVo = new ResultVo<>();
 
         try {
@@ -53,11 +53,11 @@ public class CustomerRemarkController {
     }
 
 
-    //    编辑客户备注
-    @RequestMapping("/workbench/customer/updateRemark")
+    //    编辑市场活动备注
+    @RequestMapping("/workbench/activity/updateRemark")
     @ResponseBody
-    public ResultVo<CustomerRemark> editRemark(CustomerRemark remark, HttpSession session) {
-        ResultVo<CustomerRemark> resultVo = new ResultVo<>();
+    public ResultVo<ActivityRemark> editRemark(ActivityRemark remark, HttpSession session) {
+        ResultVo<ActivityRemark> resultVo = new ResultVo<>();
         User user = (User) session.getAttribute("user");
         try {
             remark.setEditBy(user.getName());

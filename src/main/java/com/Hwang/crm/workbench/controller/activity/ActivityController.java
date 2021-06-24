@@ -1,4 +1,4 @@
-package com.Hwang.crm.workbench.controller;
+package com.Hwang.crm.workbench.controller.activity;
 
 import com.Hwang.crm.base.bean.ResultVo;
 import com.Hwang.crm.base.exception.CrmException;
