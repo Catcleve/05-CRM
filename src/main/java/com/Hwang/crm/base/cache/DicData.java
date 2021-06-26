@@ -10,8 +10,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class DicData {
@@ -38,14 +37,27 @@ public class DicData {
         List<DicType> dicTypes = typeMapper.selectByExample(typeExample);
 
 //        获取值，放入map中
-        DicValue dicValue = new DicValue();
         for (DicType dicType : dicTypes) {
-            dicValue.setTypeCode(dicType.getCode());
-            List<DicValue> dicValueList = valueMapper.select(dicValue);
+//            排序查询
+            Example example = new Example(DicValue.class);
+            example.orderBy("orderNo");
+            example.createCriteria().andEqualTo("typeCode", dicType.getCode());
+            List<DicValue> dicValueList = valueMapper.selectByExample(example);
             dicMap.put(dicType.getCode(), dicValueList);
         }
 
+
+//        加载阶段对应的可能性的文件
+        ResourceBundle stage = ResourceBundle.getBundle("mybatis.Stage");
+
+        Set<String> keySet = stage.keySet();
+//        这里需要使用keymap，可以保持自然排序
+        Map<String, String> stageState = new TreeMap<>();
+        keySet.forEach(key -> stageState.put(key, stage.getString(key)));
+
+
 //        放入到作用域
         context.setAttribute("dicMap",dicMap);
+        context.setAttribute("stageState",stageState);
     }
 }

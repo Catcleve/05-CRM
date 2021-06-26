@@ -470,10 +470,11 @@
 
     //显示线索对应的市场活动
     function activityList() {
+
         $("#activityListBody").empty()
         $.post("/crm/workbench/clue/getActivity",{
             pageNum:1,
-            pageSize:10,
+            pageSize:100,
             id:clue.id
             },
             function(data){
@@ -500,7 +501,7 @@
         }
     })
 
-    //查询市场活动
+    //查询未关联市场活动
     function getActivities(pageNum,pageSize,name) {
         $("#bindActivityBody").empty()
         $.post("/crm/workbench/clue/getActivity", {
@@ -564,19 +565,22 @@
         $("#bindModal").modal("hide")
     }
 
-    //点击解除关键
+    //点击解除关联
     function unBind(activityId) {
 
-        layer.confirm('确定删除备注吗？', {
-            btn: ['删除','取消'] //按钮
-        }, function() {
-            $.post("/crm/workbench/clue/unBind",{
-                clueId:clue.id,
-                activityId:activityId
-            },function(data){
+        layer.confirm('确定解除关联吗？', {
+            btn: ['解除', '取消'] //按钮
+        }, function () {
+            $.post("/crm/workbench/clue/unBind", {
+                clueId: clue.id,
+                activityId: activityId
+            }, function (data) {
+                layer.msg("解除成功")
                 activityList()
-            },'json');
-        })
+            }, 'json');
+        }, function () {
+
+        });
     }
 
 

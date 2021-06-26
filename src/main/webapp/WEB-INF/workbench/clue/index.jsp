@@ -337,7 +337,7 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">名称</div>
-                        <input class="form-control" type="text" id="fullName" >
+                        <input class="form-control" type="text" id="fullName"  >
                     </div>
                 </div>
 
@@ -424,7 +424,7 @@
                 </tr>
                 </thead>
                 <tbody id="clueList">
-                <tr>
+<%--                <tr>
                     <td><input type="checkbox"/></td>
                     <td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.jsp';">李四先生</a>
                     </td>
@@ -434,18 +434,8 @@
                     <td>广告</td>
                     <td>zhangsan</td>
                     <td>已联系</td>
-                </tr>
-                <tr class="active">
-                    <td><input type="checkbox"/></td>
-                    <td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.jsp';">李四先生</a>
-                    </td>
-                    <td>动力节点</td>
-                    <td>010-84846003</td>
-                    <td>12345678901</td>
-                    <td>广告</td>
-                    <td>zhangsan</td>
-                    <td>已联系</td>
-                </tr>
+                </tr>--%>
+
                 </tbody>
             </table>
 
@@ -508,7 +498,7 @@
                 pageNum: pageNum,
                 pageSize: pageSize,
                 owner: $("#owner").val(),
-                name: $("#name").val(),
+                fullName: $("#fullName").val(),
                 company: $("#company").val(),
                 phone: $("#phone").val(),
                 mPhone: $("#mPhone").val(),

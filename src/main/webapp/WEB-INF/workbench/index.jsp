@@ -441,7 +441,9 @@
     //客户信息
     var customerDetail
 
+    //每次跳转详情页面时对应的对象
     var detail
+
 
 </script>
 </body>

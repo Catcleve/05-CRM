@@ -4,10 +4,11 @@ import com.Hwang.crm.base.bean.DicValue;
 import com.Hwang.crm.base.bean.ResultVo;
 import com.Hwang.crm.base.exception.CrmException;
 import com.Hwang.crm.settings.bean.User;
-import com.Hwang.crm.workbench.bean.Activity;
-import com.Hwang.crm.workbench.bean.Clue;
-import com.Hwang.crm.workbench.bean.ClueActivityRelation;
-import com.Hwang.crm.workbench.service.ClueService;
+import com.Hwang.crm.workbench.bean.activity.Activity;
+import com.Hwang.crm.workbench.bean.clue.Clue;
+import com.Hwang.crm.workbench.bean.relation.ClueActivityRelation;
+import com.Hwang.crm.workbench.bean.tran.Tran;
+import com.Hwang.crm.workbench.service.clue.ClueService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -73,7 +74,7 @@ public class ClueController {
 
     }
 
-//    解除绑定
+//    解除市场活动绑定
     @RequestMapping("/workbench/clue/unBind")
     @ResponseBody
     public ResultVo<Object> unBind(ClueActivityRelation relation) {
@@ -84,12 +85,24 @@ public class ClueController {
 
     }
 
-//    绑定
+//    绑定市场活动
     @RequestMapping("/workbench/clue/bindActivities")
     @ResponseBody
     public ResultVo<Object> bindActivities(String clueId , String[] ids) {
         ResultVo<Object> resultVo = new ResultVo<>();
         clueService.insertRelation(clueId,ids);
+
+        return resultVo;
+
+    }
+
+//    转换 tran对象中 id值为对应的线索clue的id值，createTime对应的为是否创建交易
+    @RequestMapping("/workbench/clue/conversion")
+    @ResponseBody
+    public ResultVo<Object> conversion(Tran tran, HttpSession session) {
+
+        ResultVo<Object> resultVo = new ResultVo<>();
+        clueService.insertConversion(tran,session);
 
         return resultVo;
 

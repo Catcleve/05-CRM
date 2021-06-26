@@ -20,6 +20,7 @@ public class CrmInterceptor extends HandlerInterceptorAdapter {
         String realPath = request.getSession().getServletContext().getRealPath("/123");
         Object user = request.getSession().getAttribute("user");
 
+
         if (user == null) {
 
 

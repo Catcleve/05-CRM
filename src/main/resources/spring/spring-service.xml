@@ -22,9 +22,12 @@
     <aop:config>
 
         <aop:pointcut id="pointcut" expression="execution(*
-        com.Hwang.crm.settings..service.*.*(..))" />
+        com.Hwang.crm..service..*(..))"/>
+
+
 
         <aop:advisor advice-ref="trAdvice" pointcut-ref="pointcut" />
+
     </aop:config>
 
     <tx:advice id="trAdvice" transaction-manager="transactionManager">
