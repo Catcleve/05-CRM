@@ -75,7 +75,7 @@ public class TranController {
             }
         }
 
-        Map<String, String> stages = new HashMap<>();
+        Map<String, String> stages = new LinkedHashMap<>();
 
         ArrayList<String> stageName = new ArrayList<>(strings);
 
