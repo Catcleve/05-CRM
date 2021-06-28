@@ -184,7 +184,7 @@
         }, 'json');
     }
 
-    //查询关联市场活动
+    //查询市场活动
     function getActivities(pageNum,pageSize,name) {
         $("#bindActivityBody").empty()
         $.post("/crm/workbench/clue/getActivity", {

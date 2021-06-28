@@ -1,6 +1,9 @@
 package com.Hwang.crm.workbench.service.Impl.activity;
 
+import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.poi.excel.ExcelUtil;
+import cn.hutool.poi.excel.ExcelWriter;
 import com.Hwang.crm.base.exception.CrmEnum;
 import com.Hwang.crm.base.exception.CrmException;
 import com.Hwang.crm.base.util.DateTimeUtil;
@@ -16,11 +19,17 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.EntityColumn;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 public class ActivityServiceImpl implements ActivityService {
@@ -35,7 +44,7 @@ public class ActivityServiceImpl implements ActivityService {
     private ActivityRemarkMapper activityRemarkMapper;
 
 
-//    多条件模糊查询
+    //    多条件模糊查询
     @Override
     public PageInfo<Activity> list(PageInfo<Activity> pageInfo, Activity activity) {
 
@@ -73,7 +82,6 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
 
-
 //        分页助手需要写在这里，如果写在controller，会导致给上面的user查询分页
         PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
         List<Activity> activities = activityMapper.selectByExample(example);
@@ -87,9 +95,8 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
 
-
     //    通过activity获取对应的activityRemark
-    public void getActivityRemark(Activity active){
+    public void getActivityRemark(Activity active) {
         Example remarkExample = new Example(ActivityRemark.class);
         remarkExample.createCriteria().andEqualTo("activityId", active.getId());
         List<ActivityRemark> activityRemarks = activityRemarkMapper.selectByExample(remarkExample);
@@ -100,7 +107,7 @@ public class ActivityServiceImpl implements ActivityService {
         active.setActivityRemarks(activityRemarks);
     }
 
-//    获取所有user给下拉框使用
+    //    获取所有user给下拉框使用
     @Override
     public List<User> getUser() {
         Example example = new Example(User.class);
@@ -108,7 +115,7 @@ public class ActivityServiceImpl implements ActivityService {
         return userMapper.selectByExample(example);
     }
 
-//    添加市场活动
+    //    添加市场活动
     @Override
     public void saveActivity(Activity activity) {
         activity.setId(UUIDUtil.getUUID());
@@ -119,9 +126,9 @@ public class ActivityServiceImpl implements ActivityService {
         }
     }
 
-//    修改市场活动
+    //    修改市场活动
     @Override
-    public void updateActivityById(Activity activity ) {
+    public void updateActivityById(Activity activity) {
         activity.setEditTime(DateTimeUtil.getSysTime());
         int i = activityMapper.updateByPrimaryKeySelective(activity);
         if (i == 0) {
@@ -129,14 +136,52 @@ public class ActivityServiceImpl implements ActivityService {
         }
     }
 
-//    删除市场活动，一个或者多个
+    //    删除市场活动，一个或者多个
     @Override
     public void deleteActivity(List<String> ids) {
         Example example = new Example(Activity.class);
-        example.createCriteria().andIn("id",ids);
+        example.createCriteria().andIn("id", ids);
         int i = activityMapper.deleteByExample(example);
         if (i <= 0) {
             throw new CrmException(CrmEnum.ACTIVITY_DELETE);
         }
+    }
+
+    @Override
+    public void output(HttpServletResponse response) {
+
+
+        // 通过工具类创建writer，默认创建xls格式,true为xlsx格式
+        ExcelWriter writer = ExcelUtil.getWriter(true);
+
+//        通过example可以获取对象的属性有几个，也就是excel中有几列
+        Example example = new Example(Activity.class);
+        List<Activity> activities = activityMapper.selectByExample(example);
+        Map<String, EntityColumn> propertyMap = example.getPropertyMap();
+        int row = propertyMap.size();
+
+        // 合并单元格后的标题行，使用默认标题样式
+        writer.merge(row, "市场活动");
+        // 一次性写出内容，使用默认样式，强制输出标题
+        writer.write(activities, true);
+
+        //response为HttpServletResponse对象
+        response.setContentType("application/vnd.ms-excel;charset=utf-8");
+        //test.xls是弹出下载对话框的文件名，不能为中文，中文请自行编码
+        response.setHeader("Content-Disposition", "attachment;filename=test.xlsx");
+        ServletOutputStream out = null;
+        try {
+            out = response.getOutputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        writer.flush(out, true);
+        // 关闭writer，释放内存
+        writer.close();
+        //此处记得关闭输出Servlet流
+        IoUtil.close(out);
+
     }
 }

@@ -1,23 +1,29 @@
 package com.Hwang.crm.workbench.service.Impl.tran;
 
 import cn.hutool.core.util.StrUtil;
+import com.Hwang.crm.base.bean.StageImg;
+import com.Hwang.crm.base.exception.CrmEnum;
+import com.Hwang.crm.base.exception.CrmException;
+import com.Hwang.crm.base.util.DateTimeUtil;
+import com.Hwang.crm.base.util.UUIDUtil;
 import com.Hwang.crm.settings.bean.User;
 import com.Hwang.crm.settings.mapper.UserMapper;
+import com.Hwang.crm.workbench.bean.activity.Activity;
 import com.Hwang.crm.workbench.bean.contacts.Contacts;
 import com.Hwang.crm.workbench.bean.customer.Customer;
 import com.Hwang.crm.workbench.bean.tran.Tran;
-import com.Hwang.crm.workbench.mapper.ContactsMapper;
-import com.Hwang.crm.workbench.mapper.CustomerMapper;
-import com.Hwang.crm.workbench.mapper.TranMapper;
+import com.Hwang.crm.workbench.bean.tran.TranHistory;
+import com.Hwang.crm.workbench.mapper.*;
 import com.Hwang.crm.workbench.service.tran.TranService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.servlet.http.HttpSession;
+import java.util.*;
 
 @Service
 public class TranServiceImpl implements TranService {
@@ -33,6 +39,12 @@ public class TranServiceImpl implements TranService {
 
     @Autowired
     private ContactsMapper contactsMapper;
+
+    @Autowired
+    private TranHistoryMapper tranHistoryMapper;
+
+    @Autowired
+    private ActivityMapper activityMapper;
 
 
 
@@ -113,10 +125,10 @@ public class TranServiceImpl implements TranService {
         List<Tran> trans = tranMapper.selectByExample(example);
         pageInfo = new PageInfo<>(trans);
 
-
         User user ;
         Customer customer;
         Contacts contacts ;
+        Activity activity;
         for (Tran tran1 : pageInfo.getList()) {
             user = userMapper.selectByPrimaryKey(tran1.getOwner());
             tran1.setOwner(user.getName());
@@ -124,10 +136,16 @@ public class TranServiceImpl implements TranService {
             tran1.setCustomerId(customer.getName());
             contacts = contactsMapper.selectByPrimaryKey(tran1.getContactsId());
             tran1.setContactsId(contacts.getFullName());
+            activity = activityMapper.selectByPrimaryKey(tran1.getActivityId());
+            tran1.setActivityId(activity.getName());
+            user = userMapper.selectByPrimaryKey(tran1.getCreateBy());
+            tran1.setCreateBy(user.getName());
+
         }
         return pageInfo;
     }
 
+//  客户名称自动补全
     @Override
     public List<String> queryCustomerName(String customerName) {
 
@@ -139,4 +157,120 @@ public class TranServiceImpl implements TranService {
         return names;
     }
 
+//    获取阶段历史列表
+    @Override
+    public List<TranHistory> getHistory(Tran tran) {
+
+        String tranId = tran.getId();
+
+        Example example = new Example(TranHistory.class);
+        example.orderBy("createTime");
+        example.createCriteria().andEqualTo("tranId", tranId);
+
+        return tranHistoryMapper.selectByExample(example);
+
+    }
+
+//    显示阶段图
+    @Override
+    public ArrayList<StageImg> stage(Tran tran, HttpSession session) {
+
+        Map<String, String> stageState = (Map<String, String>) session.
+                getServletContext().getAttribute("stageState");
+
+        User user = (User) session.getAttribute("user");
+
+
+//        判断是第一次到页面还是要修改阶段状态
+        Tran newTran = tranMapper.selectByPrimaryKey(tran.getId());
+        if (!tran.getStage().equals(newTran.getStage())) {
+//            设置新的交易可能性
+            newTran.setPossibility(tran.getPossibility());
+            newTran.setStage(tran.getStage());
+//            更新交易信息
+            int i = tranMapper.updateByPrimaryKey(newTran);
+            if (i == 0 ) {
+                throw new CrmException(CrmEnum.TRAN_STAGE);
+            }
+//            创建交易历史
+            TranHistory tranHistory = new TranHistory();
+            BeanUtils.copyProperties(tran,tranHistory);
+            tranHistory.setId(UUIDUtil.getUUID());
+            tranHistory.setCreateTime(DateTimeUtil.getSysTime());
+            tranHistory.setCreateBy(user.getName());
+            tranHistory.setTranId(newTran.getId());
+            tranHistoryMapper.insert(tranHistory);
+        }
+
+        String stage = tran.getStage();
+        String substring = stage.substring(0, 2);
+        int stageNo = Integer.parseInt(substring);
+
+
+        Set<String> strings = stageState.keySet();
+
+//        判断一共有多少个状态
+        int index = strings.size();
+//        point用来记录分割点,就是从哪里开始变成失败
+        int point = 0;
+        for (String string : strings) {
+            point++;
+            if (stageState.get(string).equals("0")) {
+                break;
+            }
+        }
+
+//      存放状态名字的集合
+        ArrayList<String> stageName = new ArrayList<>(strings);
+
+        ArrayList<StageImg> stageInfo = new ArrayList<>();
+
+//      循环,次数为状态的次数
+        for (int i = 1; i <= index; i++) {
+
+            //      用来存放状态和对应的图标
+            StageImg stageImg = new StageImg();
+
+//          如果当前状态和次数都小于分割点
+            if (i < point && stageNo < point) {
+//                如果循环次数小于状态,全是绿圈
+                if (i < stageNo) {
+                    stageImg.setStage(stageName.get(i-1));
+                    stageImg.setIcon("绿圈");
+                    stageImg.setPossibility(stageState.get(stageImg.getStage()));
+//                    如果等于状态,是锚点
+                } else if (i == stageNo) {
+                    stageImg.setStage(stageName.get(i-1));
+                    stageImg.setIcon("锚点");
+                    stageImg.setPossibility(stageState.get(stageState.get(stageImg.getStage())));
+//                    如果大于当前状态,是黑圈
+                } else {
+                    stageImg.setStage(stageName.get(i-1));
+                    stageImg.setIcon("黑圈");
+                    stageImg.setPossibility(stageState.get(stageImg.getStage()));
+
+                }
+
+//                当前状态和次数都不小于分割点,说明是失败状态
+//                小于分割点的都是黑圈
+            } else if (i < point ) {
+                stageImg.setStage(stageName.get(i-1));
+                stageImg.setIcon("黑圈");
+                stageImg.setPossibility(stageState.get(stageImg.getStage()));
+//                等于当前状态的为红叉
+            } else if (stageNo == i) {
+                stageImg.setStage(stageName.get(i-1));
+                stageImg.setIcon("红叉");
+                stageImg.setPossibility(stageState.get(stageImg.getStage()));
+//                其他为黑叉
+            } else  {
+                stageImg.setStage(stageName.get(i-1));
+                stageImg.setIcon("黑叉");
+                stageImg.setPossibility(stageState.get(stageImg.getStage()));
+            }
+
+            stageInfo.add(stageImg);
+        }
+        return stageInfo;
+    }
 }

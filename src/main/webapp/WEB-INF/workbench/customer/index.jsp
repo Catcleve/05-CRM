@@ -456,7 +456,7 @@
             //遍历，然后选中
             userList.forEach(((value, key) => {
                 if (value === customer.owner) {
-                    $select.val([key])
+                    $select.val(key)
                 }
             }))
             $("#edit-id").val(customer.id)
@@ -487,7 +487,6 @@
 
     //    点击删除的按钮
     function deleteCustomer() {
-
 
         //活动名称
         let activeName = "";
@@ -535,6 +534,7 @@
         }
     }
 
+    //跳往详情页面
     function customer_detail(customer) {
         parent.customerDetail = customer
         location.href = "/crm/toView/workbench/customer/detail"

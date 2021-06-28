@@ -90,7 +90,7 @@
     </script>
 
 </head>
-<body>
+<body style="overflow-x:hidden;overflow-y:auto">
 
 <!-- 返回按钮 -->
 <div style="position: relative; top: 35px; left: 10px;">
@@ -112,7 +112,7 @@
 </div>
 
 <!-- 阶段状态 -->
-<div style="position: relative; left: 40px; top: -50px;" id="stage">
+<div style="position: relative; left: 40px; top: -50px;" id="stageImg">
     阶段&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <%--<span class="glyphicon glyphicon-ok-circle mystage" data-toggle="popover" data-placement="bottom" data-content="资质审查" style="color: #90F790;"></span>
         -----------
@@ -136,7 +136,7 @@
 </div>
 
 <!-- 详细信息 -->
-<div style="position: relative; top: 0px;">
+<%--<div style="position: relative; top: 0px;">
     <div style="position: relative; left: 40px; height: 30px;">
         <div style="width: 300px; color: gray;">所有者</div>
         <div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>zhangsan</b></div>
@@ -217,6 +217,87 @@
         <div style="width: 500px;position: relative; left: 200px; top: -20px;"><b>&nbsp;</b></div>
         <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -20px;"></div>
     </div>
+</div>--%>
+<!-- 详细信息 -->
+<div style="position: relative; top: 0px;">
+    <div style="position: relative; left: 40px; height: 30px;">
+        <div style="width: 300px; color: gray;">所有者</div>
+        <div style="width: 300px;position: relative; left: 200px; top: -20px;"><b id="owner"></b></div>
+        <div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">金额</div>
+        <div style="width: 300px;position: relative; left: 650px; top: -60px;"><b id="money"></b></div>
+        <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
+        <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
+    </div>
+    <div style="position: relative; left: 40px; height: 30px; top: 10px;">
+        <div style="width: 300px; color: gray;">名称</div>
+        <div style="width: 300px;position: relative; left: 200px; top: -20px;"><b id="name"></b></div>
+        <div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">预计成交日期</div>
+        <div style="width: 300px;position: relative; left: 650px; top: -60px;"><b id="expectedDate"></b></div>
+        <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
+        <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
+    </div>
+    <div style="position: relative; left: 40px; height: 30px; top: 20px;">
+        <div style="width: 300px; color: gray;">客户名称</div>
+        <div style="width: 300px;position: relative; left: 200px; top: -20px;"><b id="customerId"></b></div>
+        <div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">阶段</div>
+        <div style="width: 300px;position: relative; left: 650px; top: -60px;"><b id="stage"></b></div>
+        <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
+        <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
+    </div>
+    <div style="position: relative; left: 40px; height: 30px; top: 30px;">
+        <div style="width: 300px; color: gray;">类型</div>
+        <div style="width: 300px;position: relative; left: 200px; top: -20px;"><b id="type"></b></div>
+        <div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">可能性</div>
+        <div style="width: 300px;position: relative; left: 650px; top: -60px;"><b id="possibility"></b></div>
+        <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
+        <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
+    </div>
+    <div style="position: relative; left: 40px; height: 30px; top: 40px;">
+        <div style="width: 300px; color: gray;">来源</div>
+        <div style="width: 300px;position: relative; left: 200px; top: -20px;"><b id="source"></b></div>
+        <div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">市场活动源</div>
+        <div style="width: 300px;position: relative; left: 650px; top: -60px;"><b id="activityId"></b></div>
+        <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
+        <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
+    </div>
+    <div style="position: relative; left: 40px; height: 30px; top: 50px;">
+        <div style="width: 300px; color: gray;">联系人名称</div>
+        <div style="width: 500px;position: relative; left: 200px; top: -20px;"><b id="contactsId"></b></div>
+        <div style="height: 1px; width: 550px; background: #D5D5D5; position: relative; top: -20px;"></div>
+    </div>
+    <div style="position: relative; left: 40px; height: 30px; top: 60px;">
+        <div style="width: 300px; color: gray;">创建者</div>
+        <div style="width: 500px;position: relative; left: 200px; top: -20px;"><b id="createBy">&nbsp;&nbsp;</b><small style="font-size: 10px; color: gray;" id="createTime"></small></div>
+        <div style="height: 1px; width: 550px; background: #D5D5D5; position: relative; top: -20px;"></div>
+    </div>
+    <div style="position: relative; left: 40px; height: 30px; top: 70px;">
+        <div style="width: 300px; color: gray;">修改者</div>
+        <div style="width: 500px;position: relative; left: 200px; top: -20px;"><b id="editBy">&nbsp;&nbsp;</b><small style="font-size: 10px; color: gray;" id="editTime"></small></div>
+        <div style="height: 1px; width: 550px; background: #D5D5D5; position: relative; top: -20px;"></div>
+    </div>
+    <div style="position: relative; left: 40px; height: 30px; top: 80px;">
+        <div style="width: 300px; color: gray;">描述</div>
+        <div style="width: 630px;position: relative; left: 200px; top: -20px;">
+            <b id="description">
+
+            </b>
+        </div>
+        <div style="height: 1px; width: 850px; background: #D5D5D5; position: relative; top: -20px;"></div>
+    </div>
+    <div style="position: relative; left: 40px; height: 30px; top: 90px;">
+        <div style="width: 300px; color: gray;">联系纪要</div>
+        <div style="width: 630px;position: relative; left: 200px; top: -20px;">
+            <b id="contactSummary">
+                &nbsp;
+            </b>
+        </div>
+        <div style="height: 1px; width: 850px; background: #D5D5D5; position: relative; top: -20px;"></div>
+    </div>
+    <div style="position: relative; left: 40px; height: 30px; top: 100px;">
+        <div style="width: 300px; color: gray;">下次联系时间</div>
+        <div style="width: 500px;position: relative; left: 200px; top: -20px;"><b id="nextContactTime">&nbsp;</b></div>
+        <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -20px;"></div>
+    </div>
 </div>
 
 <!-- 备注 -->
@@ -281,6 +362,7 @@
             <table id="activityTable" class="table table-hover" style="width: 900px;">
                 <thead>
                 <tr style="color: #B3B3B3;">
+                    <td>序号</td>
                     <td>阶段</td>
                     <td>金额</td>
                     <td>可能性</td>
@@ -289,8 +371,8 @@
                     <td>创建人</td>
                 </tr>
                 </thead>
-                <tbody>
-                <tr>
+                <tbody id="tranHistoryBody">
+<%--                <tr>
                     <td>资质审查</td>
                     <td>5,000</td>
                     <td>10</td>
@@ -313,7 +395,7 @@
                     <td>2017-02-07</td>
                     <td>2017-02-09 10:10:10</td>
                     <td>zhangsan</td>
-                </tr>
+                </tr>--%>
                 </tbody>
             </table>
         </div>
@@ -326,54 +408,120 @@
 
 <script>
 
+<%--    获取交易的对象--%>
+    let tran = parent.detail
 
-    $.post("/crm/workbench/tran/stage", parent.detail
-        , function (data) {
-            console.log(data)
-            let map = new Map(Object.entries(data))
-            console.log(map)
-            map.forEach((key, value) => {
+    show(tran)
 
-                if (key === "黑圈") {
-                    $("#stage").append(`<span class="glyphicon glyphicon-record mystage" data-toggle="popover" data-placement="bottom" data-content="` + value + `"></span>-----------`)
-                }
-                if (key === "绿圈") {
-                    $("#stage").append(`<span class="glyphicon glyphicon-ok-circle mystage" data-toggle="popover" data-placement="bottom" data-content="` + value + `" style="color: #90F790;"></span>-----------`)
-                }
-                if (key === "红叉") {
-                    $("#stage").append(`<span class="glyphicon glyphicon-remove mystage" data-toggle="popover" data-placement="bottom" data-content="` + value + `" style="color: #f79090;"></span>-----------`)
-                }
-                if (key === "黑叉") {
-                    $("#stage").append(`<span class="glyphicon glyphicon-remove mystage" data-toggle="popover" data-placement="bottom" data-content="` + value + `" style="color: #000000;"></span>-----------`)
-                }
-                if (key === "锚点") {
-                    $("#stage").append(`<span class="glyphicon glyphicon-map-marker mystage" data-toggle="popover" data-placement="bottom" data-content="` + value + `" style="color: #90F790;"></span>-----------`)
-                }
-            })
+    //显示信息
+    function show(data) {
+        $("#owner").text(data.owner)
+        $("#money").text(data.money)
+        $("#name").text(data.name)
+        $("#expectedDate").text(data.expectedDate)
+        $("#customerId").text(data.customerId)
+        $("#type").text(data.type)
+        $("#stage").text(data.stage)
+        $("#possibility").text(data.possibility)
+        $("#source").text(data.source)
+        $("#activityId").text(data.activityId)
+        $("#contactsId").text(data.contactsId)
+        $("#createBy").text(data.createBy)
+        $("#editBy").text(data.editBy)
+        $("#createTime").text(data.createTime)
+        $("#editTime").text(data.editTime)
+        $("#description").text(data.description)
+        $("#contactSummary").text(data.contactSummary)
+        $("#nextContactTime").text(data.nextContactTime)
+        $("#head").text(data.name)
+        $("#headMoney").text("??"+data.money)
+    }
 
-            //阶段提示框
-            $(".mystage").popover({
-                trigger: 'manual',
-                placement: 'bottom',
-                html: 'true',
-                animation: false
-            }).on("mouseenter", function () {
-                var _this = this;
-                $(this).popover("show");
-                $(this).siblings(".popover").on("mouseleave", function () {
-                    $(_this).popover('hide');
-                });
-            }).on("mouseleave", function () {
-                var _this = this;
-                setTimeout(function () {
-                    if (!$(".popover:hover").length) {
-                        $(_this).popover("hide")
+
+    tranStage(tran)
+
+    //交易阶段图
+    function tranStage(tran) {
+        $("#stageImg").html("")
+        $.post("/crm/workbench/tran/stage", tran
+            , function (data) {
+
+                $.each(data,function (index,item) {
+    
+                    if (item.icon === "黑圈") {
+                        $("#stageImg").append(`<span onclick='changeStage("` + item.stage+`","`+ item.possibility + `")' class="glyphicon glyphicon-record mystage" data-toggle="popover" data-placement="bottom" data-content="` + item.stage + `"></span>`)
                     }
-                }, 100);
-            });
+                    if (item.icon === "绿圈") {
+                        $("#stageImg").append(`<span onclick='changeStage("` + item.stage+`","`+ item.possibility + `")' class="glyphicon glyphicon-ok-circle mystage" data-toggle="popover" data-placement="bottom" data-content="` + item.stage + `" style="color: #90F790;"></span>`)
+                    }
+                    if (item.icon === "红叉") {
+                        $("#stageImg").append(`<span class="glyphicon glyphicon-remove mystage" data-toggle="popover" data-placement="bottom" data-content="` + item.stage + `" style="color: #f79090;"></span>`)
+                    }
+                    if (item.icon === "黑叉") {
+                        $("#stageImg").append(`<span onclick='changeStage("` + item.stage+`","`+ item.possibility + `")' class="glyphicon glyphicon-remove mystage" data-toggle="popover" data-placement="bottom" data-content="` + item.stage + `" style="color: #000000;"></span>`)
+                    }
+                    if (item.icon === "锚点") {
+                        $("#stageImg").append(`<span class="glyphicon glyphicon-map-marker mystage" data-toggle="popover" data-placement="bottom" data-content="` + item.stage + `" style="color: #90F790;"></span>`)
+                    }
+                    $("#stageImg").append("-----------")
+                })
 
-        }, 'json');
 
+
+                //阶段提示框
+                $(".mystage").popover({
+                    trigger: 'manual',
+                    placement: 'bottom',
+                    html: 'true',
+                    animation: false
+                }).on("mouseenter", function () {
+                    var _this = this;
+                    $(this).popover("show");
+                    $(this).siblings(".popover").on("mouseleave", function () {
+                        $(_this).popover('hide');
+                    });
+                }).on("mouseleave", function () {
+                    var _this = this;
+                    setTimeout(function () {
+                        if (!$(".popover:hover").length) {
+                            $(_this).popover("hide")
+                        }
+                    }, 100);
+                });
+                tranHistoryList(tran)
+            }, 'json');
+    }
+
+//    交易历史显示
+    function tranHistoryList(tran) {
+        $("#tranHistoryBody").html("")
+        $.post("/crm/workbench/tran/history",tran,function(data){
+            $.each(data,function (index,item) {
+                let stage = item.stage;
+                let count = index + 1
+                stage = stage.substring(2,stage.size)
+                $("#tranHistoryBody").append(`<tr>
+                    <td><b>`+ count +`</b></td>
+                    <td>`+ stage +`</td>
+                    <td>`+ item.money +`</td>
+                    <td>`+ item.possibility +`</td>
+                    <td>`+ item.expectedDate +`</td>
+                    <td>`+ item.createTime +`</td>
+                    <td>`+ item.createBy +`</td>
+                </tr>`)
+            })
+        },'json');
+    }
+
+//    点击图标更改交易阶段
+    function changeStage(stage,possibility) {
+        tran.stage = stage
+        tran.possibility =possibility
+        tranStage(tran)
+        // tranHistoryList(tran)
+        $("#stage").text(stage)
+        $("#possibility").text(possibility)
+    }
 
 </script>
 </body>

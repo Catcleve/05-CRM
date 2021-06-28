@@ -225,9 +225,12 @@
                     <span class="glyphicon glyphicon-pencil"></span>
                     修改
                 </button>
-                <button type="button" class="btn btn-danger " onclick="deleteActivity()">
+                <button type="button" class="btn btn-danger" onclick="deleteActivity()">
                     <span class="glyphicon glyphicon-minus"></span>
                     删除
+                </button>
+                <button type="button" class="btn btn-default" style="position: relative;left: 50px" onclick="outputExcel()">
+                    导出为excel
                 </button>
             </div>
         </div>
@@ -508,6 +511,12 @@
         parent.activityRemark = data
         window.location.href = '/crm/toView/workbench/activity/detail';
 
+    }
+
+    function outputExcel() {
+
+        window.location.href = '/crm/workbench/activity/output';
+        
     }
 
 

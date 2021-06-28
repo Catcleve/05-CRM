@@ -47,8 +47,7 @@
     <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.Hwang.crm.settings.mapper,
                                         com.Hwang.crm.workbench.mapper,
-                                        com.Hwang.crm.base.mapper,
-                                        com.Hwang.crm.base.cache"/>
+                                        com.Hwang.crm.base.mapper"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 

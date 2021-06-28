@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -93,4 +94,13 @@ public class ActivityController {
         }
         return resultVo;
     }
+
+    //    写出市场活动
+    @RequestMapping("/workbench/activity/output")
+    public void output(HttpServletResponse response) {
+
+        activityService.output(response);
+    }
+
+
 }

@@ -5,6 +5,7 @@ import com.Hwang.crm.settings.bean.User;
 import com.Hwang.crm.workbench.bean.activity.Activity;
 import com.github.pagehelper.PageInfo;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public interface ActivityService {
@@ -17,4 +18,6 @@ public interface ActivityService {
     void updateActivityById(Activity activity);
 
     void deleteActivity(List<String> ids);
+
+    void output(HttpServletResponse response);
 }

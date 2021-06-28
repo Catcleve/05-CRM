@@ -27,6 +27,12 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
+
+    <session-config>
+        <session-timeout>0</session-timeout>
+    </session-config>
+
+
     <!--字符编码过滤器-->
     <filter>
         <filter-name>encodingFilter</filter-name>

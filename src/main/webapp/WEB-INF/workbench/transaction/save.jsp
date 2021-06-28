@@ -29,9 +29,9 @@
 </head>
 <body style="overflow-x:hidden;overflow-y:auto">
 
-<!-- 查找市场活动 -->
+<!-- 查找市场活动的模态框 -->
 <div class="modal fade" id="findMarketActivity" role="dialog">
-    <div class="modal-dialog" role="document" style="width: 80%;">
+    <div class="modal-dialog" role="document" style="width: 70%;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">
@@ -41,16 +41,18 @@
             </div>
             <div class="modal-body">
                 <div class="btn-group" style="position: relative; top: 18%; left: 8px;">
-                    <form class="form-inline" role="form">
-                        <div class="form-group has-feedback">
+
+                        <div class="has-feedback">
                             <input type="text" class="form-control" style="width: 300px;"
-                                   placeholder="请输入市场活动名称，支持模糊查询">
+                                   placeholder="请输入市场活动名称，支持模糊查询" id="activityName">
                             <span class="glyphicon glyphicon-search form-control-feedback"></span>
+
                         </div>
-                    </form>
                 </div>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-primary" onclick="queryActivity(1,5)">查询</button>
                 <table id="activityTable3" class="table table-hover"
-                       style="width: 900px; position: relative;top: 10px;">
+                       style="width: 100%; position: relative;top: 10px;">
                     <thead>
                     <tr style="color: #B3B3B3;">
                         <td></td>
@@ -60,7 +62,7 @@
                         <td>所有者</td>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="activeList">
                     <tr>
                         <td><input type="radio" name="activity"/></td>
                         <td>发传单</td>
@@ -76,13 +78,23 @@
                         <td>zhangsan</td>
                     </tr>
                     </tbody>
+
                 </table>
+
+            </div>
+            <div id="activityPage" style="width: 98%; margin: auto" >
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="bindActivity()">关联</button>
+                <button type="button" class="btn" data-dismiss="modal">取消</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- 查找联系人 -->
+<!-- 查找联系人模态框
+-->
 <div class="modal fade" id="findContacts" role="dialog">
     <div class="modal-dialog" role="document" style="width: 80%;">
         <div class="modal-content">
@@ -94,12 +106,12 @@
             </div>
             <div class="modal-body">
                 <div class="btn-group" style="position: relative; top: 18%; left: 8px;">
-                    <form class="form-inline" role="form">
+
                         <div class="form-group has-feedback">
                             <input type="text" class="form-control" style="width: 300px;" placeholder="请输入联系人名称，支持模糊查询">
                             <span class="glyphicon glyphicon-search form-control-feedback"></span>
                         </div>
-                    </form>
+
                 </div>
                 <table id="activityTable" class="table table-hover" style="width: 900px; position: relative;top: 10px;">
                     <thead>
@@ -200,36 +212,21 @@
         <label for="create-clueSource" class="col-sm-2 control-label">来源</label>
         <div class="col-sm-10" style="width: 300px;">
             <select class="form-control" id="create-clueSource">
-                <option></option>
-                <option>广告</option>
-                <option>推销电话</option>
-                <option>员工介绍</option>
-                <option>外部介绍</option>
-                <option>在线商场</option>
-                <option>合作伙伴</option>
-                <option>公开媒介</option>
-                <option>销售邮件</option>
-                <option>合作伙伴研讨会</option>
-                <option>内部研讨会</option>
-                <option>交易会</option>
-                <option>web下载</option>
-                <option>web调研</option>
-                <option>聊天</option>
+
             </select>
         </div>
-        <label for="create-activitySrc" class="col-sm-2 control-label">市场活动源&nbsp;&nbsp;<a href="javascript:void(0);"
-                                                                                           data-toggle="modal"
-                                                                                           data-target="#findMarketActivity"><span
+        <label for="create-activitySrc" class="col-sm-2 control-label">市场活动源&nbsp;&nbsp;
+            <a href="#" onclick="queryActivity(1,5)" data-toggle="modal" data-target="#findMarketActivity"><span
                 class="glyphicon glyphicon-search"></span></a></label>
-        <div class="col-sm-10" style="width: 300px;">
-            <input type="text" class="form-control" id="create-activitySrc">
+        <div class="col-sm-10" onclick="queryActivity(1,5)" data-toggle="modal" data-target="#findMarketActivity" style="width: 300px;">
+            <input type="text" class="form-control" id="create-activitySrc"  readonly >
+            <input type="hidden" name="activityId" id="activityId">
         </div>
     </div>
 
     <div class="form-group">
-        <label for="create-contactsName" class="col-sm-2 control-label">联系人名称&nbsp;&nbsp;<a href="javascript:void(0);"
-                                                                                            data-toggle="modal"
-                                                                                            data-target="#findContacts"><span
+        <label for="create-contactsName" class="col-sm-2 control-label">联系人名称&nbsp;&nbsp;
+            <a href="#" data-toggle="modal" data-target="#findContacts"><span
                 class="glyphicon glyphicon-search"></span></a></label>
         <div class="col-sm-10" style="width: 300px;">
             <input type="text" class="form-control" id="create-contactsName">
@@ -262,7 +259,6 @@
 <script>
 
 
-    <%--    --%>
 
     //根据查字典显示下拉框的方法
     function xx(select, code) {
@@ -294,8 +290,7 @@
     }
 
     //日历
-    $("#create-expectedClosingDate")
-        .datetimepicker({
+    $("#create-expectedClosingDate").datetimepicker({
             language: "zh-CN",
             format: "yyyy-mm-dd",//显示格式
             minView: "month",//设置只显示到月份
@@ -308,6 +303,9 @@
 
     //    阶段下拉
     xx($("#create-transactionStage"), "stage")
+
+    //    来源
+    xx($("#create-clueSource"), "source")
 
     //自动补全功能
     $("#create-accountName").typeahead({
@@ -336,6 +334,62 @@
         },'json');
 
     })
+
+    //点击查找市场活动
+    function queryActivity(pageNum,pageSize) {
+        $("#activeList").empty()
+        $.post("/crm/workbench/activity/list", {
+            pageNum:pageNum,
+            pageSize:pageSize,
+            name: $("#activityName").val()
+        }, function (data) {
+            $(data.list).each(function (index, item) {
+                let str = item.id
+                $("#activeList").append(`<tr class="active" >
+                                    <td><input type="radio" name="activity" class="zzz" value = '`+ str+`'/></td>
+                                    <td id="` + str + `">` + item.name + `</a></td>
+                                    <td>` + item.owner + `</td>
+                                    <td>` + item.startDate + `</td>
+                                    <td>` + item.endDate + `</td>
+                                </tr>`)
+            })
+
+            //分页导航
+            $("#activityPage").bs_pagination({
+                currentPage: data.pageNum, // 页码
+                rowsPerPage: data.pageSize, // 每页显示的记录条数
+                maxRowsPerPage: 20, // 每页最多显示的记录条数
+                totalPages: data.pages, // 总页数
+                totalRows: data.total, // 总记录条数
+                visiblePageLinks: 3, // 显示几个卡片
+                showGoToPage: true,
+                showRowsPerPage: true,
+                showRowsInfo: true,
+                showRowsDefaultInfo: true,
+                //回调函数，用户每次点击分页插件进行翻页的时候就会触发该函数
+                onChangePage: function (event, obj) {
+
+                    //刷新页面，obj.currentPage:当前点击的页码
+                    queryActivity(obj.currentPage, obj.rowsPerPage,name);
+                }
+            });
+        }, 'json');
+    }
+
+    //点击市场活动关联按钮
+    function bindActivity() {
+        let $bind =  $("input[name=activity]:checked")
+        let aNum = $bind.size()
+        let activityId = $bind.val()
+        let activityName = $("#"+activityId).text()
+        if (aNum === 0) {
+            layer.msg("请选择要关联的活动")
+            return false;
+        }
+        $("#create-activitySrc").val(activityName)
+        $("#activityId").val(activityId)
+        $("#findMarketActivity").modal("hide")
+    }
 
 
 </script>
