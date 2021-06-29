@@ -18,18 +18,18 @@
         // 指定图表的配置项和数据
         var option = {
             title: {
-                text: 'ECharts 入门示例'
+                text: '交易图'
             },
             tooltip: {},
             legend: {
-                data:['销量']
+                data:['阶段']
             },
             xAxis: {
                 data: data.xAxis
             },
             yAxis: {},
             series: [{
-                name: '销量',
+                name: '阶段',
                 type: 'bar',
                 data: data.datas
             }]
