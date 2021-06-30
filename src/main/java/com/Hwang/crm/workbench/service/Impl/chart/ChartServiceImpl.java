@@ -1,7 +1,7 @@
 package com.Hwang.crm.workbench.service.Impl.chart;
 
-import com.Hwang.crm.base.bean.Bar;
-import com.Hwang.crm.workbench.mapper.BarMapper;
+import com.Hwang.crm.base.bean.ChartInfo;
+import com.Hwang.crm.workbench.mapper.ChartInfoMapper;
 import com.Hwang.crm.workbench.service.chart.ChartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,13 +12,16 @@ import java.util.List;
 public class ChartServiceImpl implements ChartService {
 
     @Autowired
-    private BarMapper barMapper;
+    private ChartInfoMapper chartInfoMapper;
 
     @Override
-    public List<Bar> getTranBar() {
+    public List<ChartInfo> getTranBar() {
 
-        List<Bar> tranBar = barMapper.getTranBar();
+        return chartInfoMapper.getTranBar();
+    }
 
-        return tranBar;
+    @Override
+    public List<ChartInfo> getCluePie() {
+        return chartInfoMapper.getCluePie();
     }
 }

@@ -46,14 +46,10 @@
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
             <mvc:exclude-mapping path="/settings/user/login"/>
-            <mvc:exclude-mapping path="/settings/user/logout"/>
-            <mvc:exclude-mapping path="/index.jsp"/>
-            <mvc:exclude-mapping path="/crm/"/>
-            <mvc:exclude-mapping path="/crm/image/**/**"/>
-            <mvc:exclude-mapping path="/crm/jquery/**/**"/>
+            <mvc:exclude-mapping path="/image/**"/>
+            <mvc:exclude-mapping path="/jquery/**"/>
             <bean id="crmInterceptor" class="com.Hwang.crm.base.interceptor.CrmInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
-
 
 </beans>

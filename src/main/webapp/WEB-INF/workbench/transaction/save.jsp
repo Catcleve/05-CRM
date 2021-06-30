@@ -63,7 +63,7 @@
                     </tr>
                     </thead>
                     <tbody id="activeList">
-                    <tr>
+                    <%--<tr>
                         <td><input type="radio" name="activity"/></td>
                         <td>发传单</td>
                         <td>2020-10-10</td>
@@ -76,7 +76,7 @@
                         <td>2020-10-10</td>
                         <td>2020-10-20</td>
                         <td>zhangsan</td>
-                    </tr>
+                    </tr>--%>
                     </tbody>
 
                 </table>
@@ -108,12 +108,16 @@
                 <div class="btn-group" style="position: relative; top: 18%; left: 8px;">
 
                         <div class="form-group has-feedback">
-                            <input type="text" class="form-control" style="width: 300px;" placeholder="请输入联系人名称，支持模糊查询">
+                            <input type="text" class="form-control" id="contactsName" style="width: 300px;"
+                                   placeholder="请输入联系人名称，支持模糊查询">
                             <span class="glyphicon glyphicon-search form-control-feedback"></span>
                         </div>
 
                 </div>
-                <table id="activityTable" class="table table-hover" style="width: 900px; position: relative;top: 10px;">
+                <button type="button" class="btn btn-primary" onclick="queryContacts(1,5)"
+                style="position: relative;top: -7px;right: -30px">查询</button>
+                <table id="activityTable" class="table table-hover"
+                       style="width: 100%; position: relative;top: 10px;">
                     <thead>
                     <tr style="color: #B3B3B3;">
                         <td></td>
@@ -122,21 +126,22 @@
                         <td>手机</td>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
+                    <tbody id="contactsList">
+<%--                    <tr>
                         <td><input type="radio" name="activity"/></td>
                         <td>李四</td>
                         <td>lisi@bjpowernode.com</td>
                         <td>12345678901</td>
-                    </tr>
-                    <tr>
-                        <td><input type="radio" name="activity"/></td>
-                        <td>李四</td>
-                        <td>lisi@bjpowernode.com</td>
-                        <td>12345678901</td>
-                    </tr>
+                    </tr>--%>
                     </tbody>
                 </table>
+                <div id="contactsPage">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="bindContacts()">关联</button>
+                    <button type="button" class="btn" data-dismiss="modal">取消</button>
+                </div>
             </div>
         </div>
     </div>
@@ -146,35 +151,35 @@
 <div style="position:  relative; left: 30px;">
     <h3>创建交易</h3>
     <div style="position: relative; top: -40px; left: 70%;">
-        <button type="button" class="btn btn-primary">保存</button>
+        <button type="button" class="btn btn-primary" onclick="insertClue()">保存</button>
         <button type="button" class="btn btn-default" onclick=window.history.back()>取消</button>
     </div>
     <hr style="position: relative; top: -40px;">
 </div>
-<form class="form-horizontal" role="form" style="position: relative; top: -30px;">
+<form class="form-horizontal" role="form" style="position: relative; top: -30px;" id="insertTranForm">
     <div class="form-group">
         <label for="create-transactionOwner" class="col-sm-2 control-label">所有者<span
                 style="font-size: 15px; color: red;">*</span></label>
         <div class="col-sm-10" style="width: 300px;">
-            <select class="form-control" id="create-transactionOwner">
+            <select class="form-control" id="create-transactionOwner" name="owner">
 
             </select>
         </div>
         <label for="create-amountOfMoney" class="col-sm-2 control-label">金额</label>
         <div class="col-sm-10" style="width: 300px;">
-            <input type="text" class="form-control" id="create-amountOfMoney">
+            <input type="text" class="form-control" id="create-amountOfMoney" name="money">
         </div>
     </div>
 
     <div class="form-group">
         <label for="create-transactionName" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
         <div class="col-sm-10" style="width: 300px;">
-            <input type="text" class="form-control" id="create-transactionName">
+            <input type="text" class="form-control" id="create-transactionName" name="name">
         </div>
         <label for="create-expectedClosingDate" class="col-sm-2 control-label">预计成交日期<span
                 style="font-size: 15px; color: red;">*</span></label>
         <div class="col-sm-10" style="width: 300px;">
-            <input type="text" class="form-control" id="create-expectedClosingDate">
+            <input type="text" class="form-control" id="create-expectedClosingDate" name="expectedDate">
         </div>
     </div>
 
@@ -182,12 +187,13 @@
         <label for="create-accountName" class="col-sm-2 control-label">客户名称<span
                 style="font-size: 15px; color: red;">*</span></label>
         <div class="col-sm-10" style="width: 300px;">
-            <input type="text" class="form-control" id="create-accountName" placeholder="支持自动补全，输入客户不存在则新建">
+            <input type="text" class="form-control" id="create-accountName"
+                   placeholder="支持自动补全，输入客户不存在则新建" name="customerId">
         </div>
         <label for="create-transactionStage" class="col-sm-2 control-label">阶段<span
                 style="font-size: 15px; color: red;">*</span></label>
         <div class="col-sm-10" style="width: 300px;">
-            <select class="form-control" id="create-transactionStage">
+            <select class="form-control" id="create-transactionStage" name="stage">
 
             </select>
         </div>
@@ -196,22 +202,21 @@
     <div class="form-group">
         <label for="create-transactionType" class="col-sm-2 control-label">类型</label>
         <div class="col-sm-10" style="width: 300px;">
-            <select class="form-control" id="create-transactionType">
-                <option></option>
-                <option>已有业务</option>
-                <option>新业务</option>
+            <select class="form-control" id="create-transactionType" name="type">
+
             </select>
         </div>
         <label for="create-possibility" class="col-sm-2 control-label">可能性</label>
         <div class="col-sm-10" style="width: 300px;">
-            <input type="text" class="form-control" id="create-possibility">
+            <input type="text" class="form-control" id="create-possibility"
+                   placeholder="请选择阶段" readonly name="possibility">
         </div>
     </div>
 
     <div class="form-group">
         <label for="create-clueSource" class="col-sm-2 control-label">来源</label>
         <div class="col-sm-10" style="width: 300px;">
-            <select class="form-control" id="create-clueSource">
+            <select class="form-control" id="create-clueSource" name="source">
 
             </select>
         </div>
@@ -220,37 +225,38 @@
                 class="glyphicon glyphicon-search"></span></a></label>
         <div class="col-sm-10" onclick="queryActivity(1,5)" data-toggle="modal" data-target="#findMarketActivity" style="width: 300px;">
             <input type="text" class="form-control" id="create-activitySrc"  readonly >
-            <input type="hidden" name="activityId" id="activityId">
+            <input type="hidden" name="activityId" id="activityId" dirname="activityId">
         </div>
     </div>
 
     <div class="form-group">
         <label for="create-contactsName" class="col-sm-2 control-label">联系人名称&nbsp;&nbsp;
-            <a href="#" data-toggle="modal" data-target="#findContacts"><span
+            <a href="#" onclick="queryContacts(1,5)" data-toggle="modal" data-target="#findContacts"><span
                 class="glyphicon glyphicon-search"></span></a></label>
-        <div class="col-sm-10" style="width: 300px;">
-            <input type="text" class="form-control" id="create-contactsName">
+        <div class="col-sm-10" onclick="queryContacts(1,5)" data-toggle="modal" data-target="#findContacts" style="width: 300px;">
+            <input type="text" class="form-control" id="create-contactsName" readonly>
+            <input type="hidden" id="contactsId" name="contactsId">
         </div>
     </div>
 
     <div class="form-group">
         <label for="create-describe" class="col-sm-2 control-label">描述</label>
         <div class="col-sm-10" style="width: 70%;">
-            <textarea class="form-control" rows="3" id="create-describe"></textarea>
+            <textarea class="form-control" rows="3" id="create-describe" name="describe"></textarea>
         </div>
     </div>
 
     <div class="form-group">
         <label for="create-contactSummary" class="col-sm-2 control-label">联系纪要</label>
         <div class="col-sm-10" style="width: 70%;">
-            <textarea class="form-control" rows="3" id="create-contactSummary"></textarea>
+            <textarea class="form-control" rows="3" id="create-contactSummary" name="contactSummary"></textarea>
         </div>
     </div>
 
     <div class="form-group">
         <label for="create-nextContactTime" class="col-sm-2 control-label">下次联系时间</label>
         <div class="col-sm-10" style="width: 300px;">
-            <input type="text" class="form-control" id="create-nextContactTime">
+            <input type="text" class="form-control" id="create-nextContactTime" name="nextContactTime">
         </div>
     </div>
 </form>
@@ -290,7 +296,7 @@
     }
 
     //日历
-    $("#create-expectedClosingDate").datetimepicker({
+    $("#create-expectedClosingDate,#create-nextContactTime").datetimepicker({
             language: "zh-CN",
             format: "yyyy-mm-dd",//显示格式
             minView: "month",//设置只显示到月份
@@ -306,6 +312,11 @@
 
     //    来源
     xx($("#create-clueSource"), "source")
+
+    //    类型
+    xx($("#create-transactionType"), "transactionType")
+
+
 
     //自动补全功能
     $("#create-accountName").typeahead({
@@ -389,6 +400,74 @@
         $("#create-activitySrc").val(activityName)
         $("#activityId").val(activityId)
         $("#findMarketActivity").modal("hide")
+    }
+
+    //点击查找联系人
+    function queryContacts(pageNum,pageSize) {
+        $("#contactsList").empty()
+        $.post("/crm/workbench/contacts/list", {
+            pageNum:pageNum,
+            pageSize:pageSize,
+            fullName: $("#contactsName").val()
+        }, function (data) {
+            $(data.list).each(function (index, item) {
+                let str = item.id
+                $("#contactsList").append(`<tr class="active" >
+                                    <td><input type="radio" name="contacts" class="xxx" value = '`+ str+`'/></td>
+                                    <td id="` + str + `">` + item.fullName + `</a></td>
+                                    <td>` + item.email + `</td>
+                                    <td>` + item.mPhone + `</td>
+                                </tr>`)
+            })
+
+            //分页导航
+            $("#contactsPage").bs_pagination({
+                currentPage: data.pageNum, // 页码
+                rowsPerPage: data.pageSize, // 每页显示的记录条数
+                maxRowsPerPage: 20, // 每页最多显示的记录条数
+                totalPages: data.pages, // 总页数
+                totalRows: data.total, // 总记录条数
+                visiblePageLinks: 3, // 显示几个卡片
+                showGoToPage: true,
+                showRowsPerPage: true,
+                showRowsInfo: true,
+                showRowsDefaultInfo: true,
+                //回调函数，用户每次点击分页插件进行翻页的时候就会触发该函数
+                onChangePage: function (event, obj) {
+
+                    //刷新页面，obj.currentPage:当前点击的页码
+                    queryActivity(obj.currentPage, obj.rowsPerPage,name);
+                }
+            });
+        }, 'json');
+    }
+
+    //点击联系人关联按钮
+    function bindContacts() {
+        let $bind =  $("input[name=contacts]:checked")
+        let aNum = $bind.size()
+        let contactsId = $bind.val()
+        let contactsName = $("#"+contactsId).text()
+        if (aNum === 0) {
+            layer.msg("请选择要关联的活动")
+            return false;
+        }
+        $("#create-contactsName").val(contactsName)
+        $("#contactsId").val(contactsId)
+        $("#findContacts").modal("hide")
+    }
+
+    //点击保存按钮
+    function insertClue() {
+        $.post("/crm/workbench/tran/insertTran",$("#insertTranForm").serialize(),
+            function(data){
+                if (data.ok) {
+                    layer.msg(data.message, {icon: 6});
+                } else {
+                    layer.msg(data.message, {icon: 5});
+                }
+                window.history.back()
+            },'json');
     }
 
 

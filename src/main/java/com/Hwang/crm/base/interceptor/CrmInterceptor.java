@@ -23,7 +23,6 @@ public class CrmInterceptor extends HandlerInterceptorAdapter {
 
         if (user == null) {
 
-
             PrintWriter out = response.getWriter();
             out.println("<html>");
             out.println("<script>");
