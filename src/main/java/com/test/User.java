@@ -1,4 +1,4 @@
-package com.Hwang.crm.settings.bean;
+package com.test;
 
 import lombok.Data;
 import tk.mybatis.mapper.annotation.NameStyle;

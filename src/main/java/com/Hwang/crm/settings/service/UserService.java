@@ -1,6 +1,6 @@
 package com.Hwang.crm.settings.service;
 
-import com.Hwang.crm.settings.bean.User;
+import com.test.User;
 
 public interface UserService {
 

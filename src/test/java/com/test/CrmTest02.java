@@ -1,10 +1,8 @@
-package com.Hwang.crm.settings.bean;
+package com.test;
 
-import cn.hutool.core.annotation.Alias;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.DynaBean;
 import cn.hutool.core.bean.copier.CopyOptions;
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.IdUtil;
@@ -16,6 +14,7 @@ import org.junit.Test;
 
 import java.beans.PropertyDescriptor;
 import java.util.*;
+import java.util.List;
 
 public class CrmTest02 {
     @Test
@@ -81,6 +80,7 @@ public class CrmTest02 {
     }
 }
 
+
 // Lombok注解
 @Data
 class SubPersonWithAlias {
@@ -88,5 +88,6 @@ class SubPersonWithAlias {
     private String subName;
     private Boolean slow;
 }
+
 
 

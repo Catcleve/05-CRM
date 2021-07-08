@@ -106,7 +106,7 @@
                 <button type="button" class="close" data-dismiss="modal">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" >修改备注</h4>
+                <h4 class="modal-title">修改备注</h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" role="form" id="editForm">
@@ -348,7 +348,7 @@
     tranStage(tran)
 
     //分页显示交易备注
-    tranRemarkList(1,3)
+    tranRemarkList(1, 3)
 
     //给交易备注按钮绑定CSS
     function xAnde() {
@@ -473,14 +473,15 @@
     }
 
     //    显示交易备注的方法
-    function tranRemarkList(pageNum,pageSize) {
+    function tranRemarkList(pageNum, pageSize) {
         $("#remarkList").empty()
         $.post("/crm/workbench/tran/tranRemarkList", {
             tranId: tran.id,
             pageNum: pageNum,
             pageSize: pageSize
         }, function (data) {
-            if (data.list.length == 0) {
+            //如果总条数不足一页，则不显示分页
+            if (data.total <= 3) {
                 $("#remarkPage").hide()
             } else {
                 $("#remarkPage").show()
@@ -498,6 +499,7 @@
                     </div></div></div>`)
             });
 
+            //生成的元素绑定css功能
             xAnde()
 
             //分页导航
@@ -527,18 +529,18 @@
     function insertTranRemark() {
         let noteContent = $("#remark").val()
         if (noteContent === "" || noteContent == null) {
-            layer.msg("请输入备注内容",{icon:4})
+            layer.msg("请输入备注内容", {icon: 4})
             return false
         }
 
         $.post("/crm/workbench/tran/insertTranRemark", {
             tranId: tran.id,
-            noteContent:noteContent
+            noteContent: noteContent
         }, function (data) {
             if (data.ok) {
                 layer.msg(data.message, {icon: 6});
-                tranRemarkList(1,3)
-            //    关闭收起添加窗口
+                tranRemarkList(1, 3)
+                //    关闭收起添加窗口
                 $("#cancelAndSaveBtn").hide();
                 //设置remarkDiv的高度为130px
                 $("#remarkDiv").css("height", "90px");
@@ -546,7 +548,7 @@
             } else {
                 layer.msg(data.message, {icon: 5});
             }
-        //    清空窗口
+            //    清空窗口
             $("#remark").val("")
         }, 'json');
     }
@@ -556,17 +558,17 @@
         layer.confirm('确定要删除备注吗？', {
             btn: ['确定', '取消'] //按钮
         }, function () {
-            $.post("/crm/workbench/tran/deleteRemark",{
-                id:id
-            },function(data){
+            $.post("/crm/workbench/tran/deleteRemark", {
+                id: id
+            }, function (data) {
                 if (data.ok) {
                     layer.msg(data.message, {icon: 6});
                 } else {
                     layer.msg(data.message, {icon: 5});
                 }
                 //分页显示交易备注
-                tranRemarkList(1,3)
-            },'json');
+                tranRemarkList(1, 3)
+            }, 'json');
         }, function () {
 
         });
@@ -574,7 +576,7 @@
     }
 
     //    点击编辑交易备注按钮
-    function editRemark(id,noteContent) {
+    function editRemark(id, noteContent) {
         $("#editRemarkModal").modal("show");
         $("#editRemark-id").val(id);
         $("#noteContent").val(noteContent)
@@ -583,15 +585,15 @@
     function updateRemark() {
         $.post("/crm/workbench/tran/updateRemark",
             $("#editForm").serialize(),
-            function(data){
+            function (data) {
                 if (data.ok) {
                     layer.msg(data.message, {icon: 1});
                 } else {
                     layer.msg(data.message, {icon: 5});
                 }
                 $("#editRemarkModal").modal("hide");
-                tranRemarkList(1,3)
-            },'json');
+                tranRemarkList(1, 3)
+            }, 'json');
     }
 </script>
 </body>

@@ -1,7 +1,7 @@
 package com.Hwang.crm.workbench.service.activity;
 
 
-import com.Hwang.crm.settings.bean.User;
+import com.test.User;
 import com.Hwang.crm.workbench.bean.activity.Activity;
 import com.github.pagehelper.PageInfo;
 

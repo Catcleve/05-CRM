@@ -54,13 +54,14 @@
     }
 
     function login() {
+
         let loginForm = $("#loginForm").serialize();
         $.post("/crm/settings/user/login", loginForm, function (result) {
+
             if (!result.ok) {
                 layer.msg(result.message, {icon: 5});
             } else {
             //    访问去首页的方法
-                console.log(1111)
                 location.href = "/crm/toView/workbench/index"
             }
         }, "json");

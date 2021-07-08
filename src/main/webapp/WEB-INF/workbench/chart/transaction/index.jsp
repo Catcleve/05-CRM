@@ -7,12 +7,12 @@
     <script type="text/javascript" src="/crm/jquery/jquery-1.11.1-min.js"></script>
 </head>
 <body>
-<div id="main" style="width: 800px;height:600px;margin:150px auto"></div>
+<div id="main" style="width: 1500px;height:600px;margin:150px auto"></div>
 <script type="text/javascript">
 
     $.post("/crm/workbench/chart/getTranBar",function(data){
 
-
+        console.log(data)
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('main'));
 

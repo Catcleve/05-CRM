@@ -1,9 +1,8 @@
 package com.Hwang.crm.workbench.service.Impl.contacts;
 
 import cn.hutool.core.util.StrUtil;
-import com.Hwang.crm.settings.bean.User;
+import com.test.User;
 import com.Hwang.crm.settings.mapper.UserMapper;
-import com.Hwang.crm.workbench.bean.clue.Clue;
 import com.Hwang.crm.workbench.bean.contacts.Contacts;
 import com.Hwang.crm.workbench.bean.customer.Customer;
 import com.Hwang.crm.workbench.mapper.ContactsMapper;
@@ -12,7 +11,6 @@ import com.Hwang.crm.workbench.service.contacts.ContactsService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 

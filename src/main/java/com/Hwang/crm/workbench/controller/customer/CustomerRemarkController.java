@@ -2,7 +2,7 @@ package com.Hwang.crm.workbench.controller.customer;
 
 import com.Hwang.crm.base.bean.ResultVo;
 import com.Hwang.crm.base.exception.CrmException;
-import com.Hwang.crm.settings.bean.User;
+import com.test.User;
 import com.Hwang.crm.workbench.bean.customer.CustomerRemark;
 import com.Hwang.crm.workbench.service.customer.CustomerRemarkService;
 import org.springframework.beans.factory.annotation.Autowired;

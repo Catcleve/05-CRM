@@ -9,7 +9,7 @@ import com.Hwang.crm.base.exception.CrmEnum;
 import com.Hwang.crm.base.exception.CrmException;
 import com.Hwang.crm.base.util.DateTimeUtil;
 import com.Hwang.crm.base.util.UUIDUtil;
-import com.Hwang.crm.settings.bean.User;
+import com.test.User;
 import com.Hwang.crm.settings.mapper.UserMapper;
 import com.Hwang.crm.workbench.bean.activity.Activity;
 import com.Hwang.crm.workbench.bean.contacts.Contacts;
@@ -339,6 +339,7 @@ public class TranServiceImpl implements TranService {
 
     }
 
+//    添加交易备注
     @Override
     public void insertTranRemark(TranRemark tranRemark, User user) {
 //        设置ID
@@ -369,6 +370,7 @@ public class TranServiceImpl implements TranService {
 
     }
 
+//    修改交易备注
     @Override
     public void updateRemark(TranRemark remark) {
 

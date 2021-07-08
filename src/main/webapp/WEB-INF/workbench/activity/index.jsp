@@ -10,6 +10,7 @@
           type="text/css" rel="stylesheet"/>
 
     <script type="text/javascript" src="/crm/jquery/jquery-1.11.1-min.js"></script>
+    <script type="text/javascript" src="/crm/jquery/vue.js"></script>
     <script type="text/javascript" src="/crm/jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
     <script type="text/javascript"
             src="/crm/jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js"></script>
@@ -43,13 +44,14 @@
 
                 <form class="form-horizontal" role="form" id="addForm">
 
-                    <div class="form-group">
+                    <div class="form-group" id="app">
                         <label for="create-marketActivityOwner" class="col-sm-2 control-label">所有者
                             <span style="font-size: 15px; color: red;">*</span>
                         </label>
                         <div class="col-sm-10" style="width: 300px;">
                             <select class="form-control" id="create-marketActivityOwner" name="owner">
-
+                                <option value="">请选择</option>
+                                <option v-for="(key,value) in users" :value="value">{{key}}</option>
                             </select>
                         </div>
                         <label for="create-marketActivityName" class="col-sm-2 control-label">名称
@@ -229,10 +231,10 @@
                     <span class="glyphicon glyphicon-minus"></span>
                     删除
                 </button>
-                <button type="button" class="btn btn-default" style="position: relative;left: 50px" onclick="outputExcel()">
-                    导出为excel
-                </button>
             </div>
+            <button type="button" class="btn btn-default" style="position: relative;left: 50px;top: 9px" onclick="outputExcel()">
+                导出为excel
+            </button>
         </div>
         <div style="position: relative;top: 10px;">
             <table class="table table-hover">
@@ -348,18 +350,7 @@
             pickerPosition: "bottom-left"
         });
 
-    //    抽取出回显下拉框的方法
-    // function opSelect($select) {
-    //     $.post("/crm/workbench/activity/getUser", function (data) {
-    //         data.forEach((item,index) =>{
-    //             $select.append(`<option value='` + item.id + `'>` + item.name + `</option>`)
-    //         })
-    //
-    //         // $.each($(data), function (index, item) {
-    //         //     $select.append(`<option value='` + item.id + `'>` + item.name + `</option>`)
-    //         // });
-    //     }, 'json');
-    // }
+
     //回显下拉框，返回含有user id和name的对象
     function opSelect($select) {
 
@@ -377,10 +368,10 @@
     function createActivity() {
         const $select = $("#create-marketActivityOwner");
         //    清空
-        $select.empty()
+        // $select.empty()
         $("#addForm input,textarea").val("")
         //    回显下拉框
-        opSelect($select)
+        // opSelect($select)
 
     }
 
@@ -513,11 +504,21 @@
 
     }
 
+    //导出为excel
     function outputExcel() {
 
         window.location.href = '/crm/workbench/activity/output';
         
     }
+
+
+    let app = new Vue({
+        el: '#app',
+        data: {
+            users:parent.userMap
+        }
+    });
+
 
 
 </script>

@@ -5,7 +5,7 @@ import com.Hwang.crm.base.bean.ResultVo;
 import com.Hwang.crm.base.exception.CrmException;
 import com.Hwang.crm.base.util.MD5Util;
 import com.Hwang.crm.base.util.UploadUtil;
-import com.Hwang.crm.settings.bean.User;
+import com.test.User;
 import com.Hwang.crm.settings.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Enumeration;
 
 @Controller
 public class UserController {

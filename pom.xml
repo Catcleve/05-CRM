@@ -41,6 +41,9 @@
     <springforamework.version>5.0.3.RELEASE</springforamework.version>
   </properties>
 
+
+
+
   <dependencies>
     <!--单元测试-->
     <dependency>
@@ -224,6 +227,14 @@
       <artifactId>poi-ooxml</artifactId>
       <version>4.1.2</version>
     </dependency>
+
+<!--    可以代替autowired-->
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <version>1</version>
+    </dependency>
+
 
   </dependencies>
 

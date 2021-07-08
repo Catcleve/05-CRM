@@ -1,9 +1,7 @@
-package com.Hwang.crm.settings.bean;
+package com.test;
 
-import com.Hwang.crm.base.cache.DicData;
 import com.Hwang.crm.base.util.MD5Util;
 import com.Hwang.crm.base.util.UUIDUtil;
-import com.Hwang.crm.settings.bean.User;
 import com.Hwang.crm.settings.mapper.UserMapper;
 import com.Hwang.crm.workbench.bean.clue.Clue;
 import com.Hwang.crm.workbench.bean.customer.Customer;

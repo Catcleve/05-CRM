@@ -1,7 +1,7 @@
 package com.Hwang.crm.workbench.service.tran;
 
 import com.Hwang.crm.base.bean.StageImg;
-import com.Hwang.crm.settings.bean.User;
+import com.test.User;
 import com.Hwang.crm.workbench.bean.tran.Tran;
 import com.Hwang.crm.workbench.bean.tran.TranHistory;
 import com.Hwang.crm.workbench.bean.tran.TranRemark;

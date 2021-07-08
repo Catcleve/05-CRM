@@ -418,15 +418,15 @@
     //声明全局变量
 
     //user名称和id的键值对
-    var userMap = getUser();
+    const userMap = getUser();
 
     //点击活动名称时把对应的活动信息放入这里
-    var activityRemark
+    let activityRemark
 
     //字典数据
-    var dirMap = getDic();
 
-    dirMap = new Map(Object.entries(dirMap))
+
+    const dirMap = new Map(Object.entries(getDic()))
 
     function getDic() {
         let dirMap
@@ -438,13 +438,13 @@
                 dirMap = data
             },'json');
         return dirMap
-    }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 }
 
     //客户信息
-    var customerDetail
+    let customerDetail
 
     //每次跳转详情页面时对应的对象
-    var detail
+    let detail
 
 
 </script>

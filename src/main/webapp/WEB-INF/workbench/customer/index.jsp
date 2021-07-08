@@ -398,7 +398,6 @@
     //点击创建按钮
     function createCustomer() {
         const $select = $("#create-customerOwner");
-
         //    回显下拉框
         opSelect($select)
 
@@ -506,15 +505,13 @@
                 //这里item的value是一个json对象的字符串形式，转换为json对象
                 const custom = JSON.parse($(item).val());
                 if (index < int) {
-                    //id拼接的字符串，可以直接传入后台作为数组
+                    //把id放入数组
                     ids.push(custom.id)
                     //获取活动名称
                     activeName += custom.name + ","
                 }
-                console.log(ids)
             })
             activeName = activeName.substring(0, activeName.length - 1)
-
 
             layer.confirm('<h4>确定删除以下' + int + '条</h4>' + activeName + '吗？', {
                 btn: ['删除', '取消'] //按钮
@@ -528,6 +525,7 @@
                         } else {
                             layer.msg(data.message, {icon: 5});
                         }
+
 
                     }, 'json');
             });
